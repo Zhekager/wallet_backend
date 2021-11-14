@@ -3,3 +3,4 @@ node_modules
 uploads
 users-avatars
 coverage
+package-lock.json
