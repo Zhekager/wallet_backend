@@ -1,0 +1,1290 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "version": "1.0.0",
+        "title": "Wallet",
+        "description": "REST API Application",
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        }
+    },
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "servers": [
+        {"url": "http://localhost:3000/"}
+    ],
+    "tags": [
+        {
+            "name": "Users",
+            "description": "Endpoints for Users"
+        },
+        {
+            "name": "Transactions",
+            "description": "Endpoints for Transactions"
+        },
+        {
+            "name": "Categories",
+            "description": "Endpoints for Categories"
+        }
+    ],
+    "paths": {
+        "/api/users/signup": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "User registration",
+                "parameters": [],
+                "requestBody": {
+                    "description": "Registration's object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation",
+                        "content": {}
+                    },
+                    "400": {
+                        "description": "Bad request (invalid request body)",
+                        "content": {}
+                    },
+                    "409": {
+                        "description": "Provided email already exists",
+                        "content": {}
+                    }
+                }
+            }
+        },
+        "/api/users/login": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "User authentication",
+                "parameters": [],
+                "requestBody": {
+                    "description": "Authentication's object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {}
+                    },
+                    "400": {
+                        "description": "Bad request (invalid request body)",
+                        "content": {}
+                    },
+                    "403": {
+                        "description": "Email doesn't exist / Password is wrong",
+                        "content": {}
+                    }
+                }
+            }
+        },
+        "/api/users/logout": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Logout",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [],
+                "responses": {
+                    "204": {
+                        "description": "Successful operation",
+                        "content": {}
+                    },
+                    "400": {
+                        "description": "No token provided",
+                        "content": {}
+                    },
+                    "401": {
+                        "description": "Unauthorized (invalid access token)",
+                        "content": {}
+                    },
+                    "404": {
+                        "description": "Invalid user / Invalid session",
+                        "content": {}
+                    }
+                }
+            }
+        },
+        "/api/users/verify": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "User verify",
+                "parameters": [],
+                "requestBody": {
+                    "description": "Verification",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {}
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "content": {}
+                    },
+                    "409": {
+                        "description": "Email has not been verified",
+                        "content": {}
+                    }
+                }
+            }
+        },
+        "/api/users/google": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Google authentication. ",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {}
+                    },
+                    "403": {
+                        "description": "Not registered",
+                        "content": {}
+                    }
+                }
+            }
+        },
+        "/api/users/current": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Current user",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation (redirect to front-end with token in query). Then use GET /user/info",
+                        "content": {}
+                    },
+                    "403": {
+                        "description": "Not registered",
+                        "content": {}
+                    },
+                    "security": [
+                        {
+                            "Bearer": []
+                        }
+                    ]
+                }
+            }
+        },
+        "/api/users/verify/:verifyToken": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "verifyToken",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation (redirect to front-end with token in query). Then use GET /user/info",
+                        "content": {}
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "content": {}
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {}
+                    },
+                    "security": [
+                        {
+                            "Bearer": []
+                        }
+                    ]
+                }
+            }
+        },
+        "/api/transactions": {
+            "post": {
+                "tags": [
+                    "Transactions"
+                ],
+                "summary": "Create a new transaction",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [],
+                "requestBody": {
+                    "description": "Transaction's object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "transType": {
+                                        "type": "string"
+                                    },
+                                    "date": {
+                                        "type": "date",
+                                        "example": "14.11.2021"
+                                    },
+                                    "sum": {
+                                        "type": "Number",
+                                        "example": "1000"
+                                    },
+                                    "comment": {
+                                        "type": "string",
+                                        "example": "comment"
+                                    },
+                                    "categoryId": {
+                                        "type": "string",
+                                        "example": "345e5677e78934c90f67"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example" : "Success"
+                                        },
+                                        "code": {
+                                            "type": "number",
+                                            "example": "201"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "transType": {
+                                                    "type": "string",
+                                                    "description": "'spend' or 'income'",
+                                                    "example": "income"
+                                                },
+                                                "_id": {
+                                                    "type": "string",
+                                                    "example": "hg63576538hvhdjjb763875687"
+                                                },
+                                                "date": {
+                                                    "type": "string",
+                                                    "example": "14.11.2021"
+                                                },
+                                                "sum": {
+                                                    "type": "Number",
+                                                    "example": "1000"
+                                                },
+                                                "comment": {
+                                                    "type": "string",
+                                                    "example": "comment"
+                                                },
+                                                "balance": {
+                                                   "type": "Number",
+                                                    "example": "5000" 
+                                                },
+                                                "categoryId": {
+                                                    "type": "string",
+                                                    "example": "hgh467676386gf3742363"
+                                                },
+                                                "owner": {
+                                                    "type": "string",
+                                                    "example": "hgh467676386gf3742363"
+                                                },
+                                                "month": {
+                                                    "type": "Number",
+                                                    "example": "11"
+                                                },
+                                                "year": {
+                                                    "type": "Number",
+                                                    "example": "2021"
+                                                },
+                                                "createdAt": {
+                                                    "type": "string",
+                                                    "example": "2021-11-14T20:23"
+                                                },
+                                                "updatedAt": {
+                                                    "type": "string",
+                                                    "example": "2021-11-14T20:23"
+                                                }
+
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request (invalid request body) / No token provided",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "Error"
+                                        },
+                                        "code": {
+                                            "type": "number",
+                                            "example": "400"
+                                        }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized (invalid access token)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "Error"
+                                        },
+                                        "code": {
+                                            "type": "number",
+                                            "example": "401"
+                                        }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "Fail"
+                                        },
+                                        "code": {
+                                            "type": "number",
+                                            "example": "500"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Internal Server Error"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+                    }
+                }
+            }
+        },
+        "/api/transactions?page=1&limit=10&transType=income&month=11&year=2021": {
+            "get": {
+                "tags": [
+                    "Transactions"
+                ],
+                "summary": "Get all transaction. Can be filtered by month and year",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "Success"
+                                        },
+                                        "code": {
+                                            "type": "number",
+                                            "example": "200"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "docs": [
+                                                    {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "transType": {
+                                                                "type": "string",
+                                                                "description": "'spend' or 'income'",
+                                                                "example": "income"
+                                                            },
+                                                            "_id": {
+                                                                "type": "string",
+                                                                "example": "hg63576538hvhdjjb763875687"
+                                                            },
+                                                            "date": {
+                                                                "type": "string",
+                                                                "example": "14.11.2021"
+                                                            },
+                                                            "sum": {
+                                                                "type": "Number",
+                                                                "example": "1000"
+                                                            },
+                                                            "comment": {
+                                                                "type": "string",
+                                                                "example": "comment"
+                                                            },
+                                                            "balance": {
+                                                                "type": "Number",
+                                                                "example": "5000"
+                                                            },
+                                                            "categoryId": {
+                                                                "type": "string",
+                                                                "properties": {
+                                                                    "_id": {
+                                                                        "type": "string",
+                                                                        "example": "hgh467676386gf3742363"
+                                                                    },
+                                                                    "value": {
+                                                                        "type": "string",
+                                                                        "example": "Еда"
+                                                                    }
+                                                                }
+                                                            },
+                                                            "owner": {
+                                                                "type": "object",
+                                                                "properties":{
+                                                                    "_id": {
+                                                                        "type": "string",
+                                                                        "example": "hgh467676386gf3742363"
+                                                                    },
+                                                                    "name": {
+                                                                        "type": "string",
+                                                                        "example": "Tetiana"
+                                                                    },
+                                                                    "email": {
+                                                                        "type": "string",
+                                                                        "format": "email",
+                                                                        "example": "tetiana@gmail.com"
+                                                                    }
+                                                                }
+                                                                
+                                                            },
+                                                            "month": {
+                                                                "type": "Number",
+                                                                "example": "11"
+                                                            },
+                                                            "year": {
+                                                                "type": "Number",
+                                                                "example": "2021"
+                                                            },
+                                                            "createdAt": {
+                                                                "type": "string",
+                                                                "example": "2021-11-14T20:23"
+                                                            },
+                                                            "updatedAt": {
+                                                                "type": "string",
+                                                                "example": "2021-11-14T20:23"
+                                                            }
+                                                        }
+                                                    }
+                                                    }
+                                                ]
+                                            },
+                                            "totalDocs": {
+                                                "type": "Number",
+                                                "example": "5"
+                                            },
+                                            "limit": {
+                                                "type": "Number",
+                                                "example": "10"
+                                            },
+                                            "totalPages": {
+                                                "type": "Number",
+                                                "example": "1"
+                                            },
+                                            "page": {
+                                                "type": "Number",
+                                                "example": "1"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized (invalid access token)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "Error"
+                                        },
+                                        "code": {
+                                            "type": "number",
+                                            "example": "401"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "Fail"
+                                        },
+                                        "code": {
+                                            "type": "number",
+                                            "example": "500"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Internal Server Error"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/transactions:transId": {
+            "get": {
+                "tags": [
+                    "Transactions"
+                ],
+                "summary": "Get transaction by id",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "Success"
+                                        },
+                                        "code": {
+                                            "type": "number",
+                                            "example": "200"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "docs": [
+                                                    {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "transType": {
+                                                                    "type": "string",
+                                                                    "description": "'spend' or 'income'",
+                                                                    "example": "income"
+                                                                },
+                                                                "_id": {
+                                                                    "type": "string",
+                                                                    "example": "hg63576538hvhdjjb763875687"
+                                                                },
+                                                                "date": {
+                                                                    "type": "string",
+                                                                    "example": "14.11.2021"
+                                                                },
+                                                                "sum": {
+                                                                    "type": "Number",
+                                                                    "example": "1000"
+                                                                },
+                                                                "comment": {
+                                                                    "type": "string",
+                                                                    "example": "comment"
+                                                                },
+                                                                "balance": {
+                                                                    "type": "Number",
+                                                                    "example": "5000"
+                                                                },
+                                                                "categoryId": {
+                                                                    "type": "string",
+                                                                    "properties": {
+                                                                        "_id": {
+                                                                            "type": "string",
+                                                                            "example": "hgh467676386gf3742363"
+                                                                        },
+                                                                        "value": {
+                                                                            "type": "string",
+                                                                            "example": "Еда"
+                                                                        }
+                                                                    }
+                                                                },
+                                                                "owner": {
+                                                                    "type": "object",
+                                                                    "properties": {
+                                                                        "_id": {
+                                                                            "type": "string",
+                                                                            "example": "hgh467676386gf3742363"
+                                                                        },
+                                                                        "name": {
+                                                                            "type": "string",
+                                                                            "example": "Tetiana"
+                                                                        },
+                                                                        "email": {
+                                                                            "type": "string",
+                                                                            "format": "email",
+                                                                            "example": "tetiana@gmail.com"
+                                                                        }
+                                                                    }
+                                                                },
+                                                                "month": {
+                                                                    "type": "Number",
+                                                                    "example": "11"
+                                                                },
+                                                                "year": {
+                                                                    "type": "Number",
+                                                                    "example": "2021"
+                                                                },
+                                                                "createdAt": {
+                                                                    "type": "string",
+                                                                    "example": "2021-11-14T20:23"
+                                                                },
+                                                                "updatedAt": {
+                                                                    "type": "string",
+                                                                    "example": "2021-11-14T20:23"
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            "totalDocs": {
+                                                "type": "Number",
+                                                "example": "5"
+                                            },
+                                            "limit": {
+                                                "type": "Number",
+                                                "example": "10"
+                                            },
+                                            "totalPages": {
+                                                "type": "Number",
+                                                "example": "1"
+                                            },
+                                            "page": {
+                                                "type": "Number",
+                                                "example": "1"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized (invalid access token)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "Error"
+                                        },
+                                        "code": {
+                                            "type": "number",
+                                            "example": "401"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "Fail"
+                                        },
+                                        "code": {
+                                            "type": "number",
+                                            "example": "500"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Internal Server Error"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/transactions:transId": {
+            "delete": {
+                "tags": [
+                    "Transactions"
+                ],
+                "summary": "Delete transaction by id",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "Success"
+                                        },
+                                        "code": {
+                                            "type": "number",
+                                            "example": "200"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "description": "Transaction deleted"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized (invalid access token)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "Error"
+                                        },
+                                        "code": {
+                                            "type": "number",
+                                            "example": "401"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "description": "Not authorized"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "Fail"
+                                        },
+                                        "code": {
+                                            "type": "number",
+                                            "example": "500"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Internal Server Error"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/transactions:{transId}": {
+            "patch": {
+                "tags": [
+                    "Transactions"
+                ],
+                "summary": "Update transaction by id",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [],
+                "requestBody": {
+                    "description": "Transaction's object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "transType": {
+                                        "type": "string"
+                                    },
+                                    "date": {
+                                        "type": "date",
+                                        "example": "14.11.2021"
+                                    },
+                                    "sum": {
+                                        "type": "Number",
+                                        "example": "1000"
+                                    },
+                                    "comment": {
+                                        "type": "string",
+                                        "example": "comment"
+                                    },
+                                    "categoryId": {
+                                        "type": "string",
+                                        "example": "345e5677e78934c90f67"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "Success"
+                                        },
+                                        "code": {
+                                            "type": "number",
+                                            "example": "200"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "docs": [
+                                                    {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "transType": {
+                                                                    "type": "string",
+                                                                    "description": "'spend' or 'income'",
+                                                                    "example": "income"
+                                                                },
+                                                                "_id": {
+                                                                    "type": "string",
+                                                                    "example": "hg63576538hvhdjjb763875687"
+                                                                },
+                                                                "date": {
+                                                                    "type": "string",
+                                                                    "example": "14.11.2021"
+                                                                },
+                                                                "sum": {
+                                                                    "type": "Number",
+                                                                    "example": "1000"
+                                                                },
+                                                                "comment": {
+                                                                    "type": "string",
+                                                                    "example": "comment"
+                                                                },
+                                                                "balance": {
+                                                                    "type": "Number",
+                                                                    "example": "5000"
+                                                                },
+                                                                "categoryId": {
+                                                                    "type": "string",
+                                                                    "properties": {
+                                                                        "_id": {
+                                                                            "type": "string",
+                                                                            "example": "hgh467676386gf3742363"
+                                                                        },
+                                                                        "value": {
+                                                                            "type": "string",
+                                                                            "example": "Еда"
+                                                                        }
+                                                                    }
+                                                                },
+                                                                "owner": {
+                                                                    "type": "object",
+                                                                    "properties": {
+                                                                        "_id": {
+                                                                            "type": "string",
+                                                                            "example": "hgh467676386gf3742363"
+                                                                        },
+                                                                        "name": {
+                                                                            "type": "string",
+                                                                            "example": "Tetiana"
+                                                                        },
+                                                                        "email": {
+                                                                            "type": "string",
+                                                                            "format": "email",
+                                                                            "example": "tetiana@gmail.com"
+                                                                        }
+                                                                    }
+                                                                },
+                                                                "month": {
+                                                                    "type": "Number",
+                                                                    "example": "11"
+                                                                },
+                                                                "year": {
+                                                                    "type": "Number",
+                                                                    "example": "2021"
+                                                                },
+                                                                "createdAt": {
+                                                                    "type": "string",
+                                                                    "example": "2021-11-14T20:23"
+                                                                },
+                                                                "updatedAt": {
+                                                                    "type": "string",
+                                                                    "example": "2021-11-14T20:23"
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            "totalDocs": {
+                                                "type": "Number",
+                                                "example": "5"
+                                            },
+                                            "limit": {
+                                                "type": "Number",
+                                                "example": "10"
+                                            },
+                                            "totalPages": {
+                                                "type": "Number",
+                                                "example": "1"
+                                            },
+                                            "page": {
+                                                "type": "Number",
+                                                "example": "1"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized (invalid access token)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "Error"
+                                        },
+                                        "code": {
+                                            "type": "number",
+                                            "example": "401"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "Fail"
+                                        },
+                                        "code": {
+                                            "type": "number",
+                                            "example": "500"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Internal Server Error"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/categories": {
+            "get": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Get all categories",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "Success"
+                                        },
+                                        "code": {
+                                            "type": "number",
+                                            "example": "200"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "categoryId": {
+                                                    "type": "integer",
+                                                    "example": "1"
+                                                },
+                                                "value": {
+                                                    "type": "string",
+                                                    "example": "Еда"
+                                                },
+                                                "createdAt": {
+                                                    "type": "string",
+                                                    "example": "2021-11-14T20:23"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized (invalid access token)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "Error"
+                                        },
+                                        "code": {
+                                            "type": "number",
+                                            "example": "401"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "Fail"
+                                        },
+                                        "code": {
+                                            "type": "number",
+                                            "example": "500"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Internal Server Error"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "User": {
+
+            },
+            "Transaction": {
+                "type": "object",
+                "properties": {
+                    "transType": {
+                        "type": "string",
+                        "description": "'spend' or 'income'",
+                        "example": "income"
+                    },
+                    "_id": {
+                        "type": "string",
+                        "example": "hg63576538hvhdjjb763875687"
+                    },
+                    "date": {
+                        "type": "string",
+                        "example": "14.11.2021"
+                    },
+                    "sum": {
+                        "type": "Number",
+                        "example": "1000"
+                    },
+                    "comment": {
+                        "type": "string",
+                        "example": "comment"
+                    },
+                    "balance": {
+                        "type": "Number",
+                        "example": "5000"
+                    },
+                    "categoryId": {
+                        "type": "string",
+                        "example": "hgh467676386gf3742363"
+                    },
+                    "owner": {
+                        "type": "string",
+                        "example": "hgh467676386gf3742363"
+                    },
+                    "month": {
+                        "type": "Number",
+                        "example": "11"
+                    },
+                    "year": {
+                        "type": "Number",
+                        "example": "2021"
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "example": "2021-11-14T20:23"
+                    },
+                    "updatedAt": {
+                        "type": "string",
+                        "example": "2021-11-14T20:23"
+                    }
+                }
+            },
+            "Category": {
+                "type": "object",
+                "properties": {
+                    "categoryId": {
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "value": {
+                        "type": "string",
+                        "example": "Еда"
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "example": "2021-11-14T20:23"
+                    }
+                }
+            }
+        }
+    }, 
+    "securitySchemes": {
+        "Bearer": {
+            "type": "http",
+            "scheme": "bearer",
+            "bearerFormat": "JWT"
+        }
+    }
+}
