@@ -28,4 +28,4 @@ class CreateSenderSendGrid {
 //   }
 // }
 
-module.exports = { CreateSenderSendGrid, CreateSenderNodemailer };
+module.exports = { CreateSenderSendGrid, };
