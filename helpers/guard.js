@@ -1,4 +1,3 @@
-
 const passport = require("passport");
 require("../config/passport");
 const { HttpCode } = require("./constants");
@@ -7,10 +6,8 @@ const guard = (req, res, next) => {
   passport.authenticate("jwt", { session: false }, (err, user) => {
     // const token = req.get("Authorization")?.split(" ")[1];
     const token =
-      req.get("Authorization") === null ||
-      req.get("Authorization") === undefined
-        ? undefined
-        : req.get("Authorization").split(" ")[1];
+      req.get("Authorization") === true &&
+      req.get("Authorization").split(" ")[1];
 
     if (!user || err || token !== user.token) {
       return res.status(HttpCode.UNAUTHORIZED).json({
@@ -46,4 +43,3 @@ module.exports = guard;
 // };
 
 // module.exports = guard;
-

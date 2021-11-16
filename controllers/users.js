@@ -18,7 +18,7 @@ const signup = async (req, res, next) => {
     return res.status(HttpCode.CONFLICT).json({
       status: "error",
       code: HttpCode.CONFLICT,
-      message: "Email is already in use!",
+      message: "Email is already in use",
     });
   }
   try {
@@ -40,7 +40,7 @@ const signup = async (req, res, next) => {
     return res.status(HttpCode.CREATED).json({
       status: "success",
       code: HttpCode.CREATED,
-      message: "Please verify your email!",
+      message: "User created",
       data: {
         id: newUser.id,
         name: newUser.name,
@@ -65,15 +65,11 @@ const login = async (req, res) => {
       : await user.isValidPassword(password);
 
   // if (!user || !isValidPassword || !user?.verify) {
-  if (
-    !user || !isValidPassword || !user === null || !user === undefined
-      ? undefined
-      : !user.verify
-  ) {
+  if (!user || !isValidPassword || (!user === true && user.verify)) {
     return res.status(HttpCode.UNAUTHORIZED).json({
       status: "error",
       code: HttpCode.UNAUTHORIZED,
-      message: "Email or password is wrong!",
+      message: "Email or password is wrong",
     });
   }
   const id = user._id;
@@ -83,8 +79,8 @@ const login = async (req, res) => {
   return res.status(HttpCode.OK).json({
     status: "success",
     code: HttpCode.OK,
-    message: "You have logged in!",
-    date: {
+    message: "You have logged in",
+    data: {
       token,
     },
   });
@@ -130,7 +126,7 @@ const updateUserInfo = async (req, res, next) => {
     return res.json({
       status: "error",
       code: HttpCode.NOT_FOUND,
-      message: "User not found!",
+      message: "User not found",
     });
   } catch (e) {
     next(e);
@@ -171,13 +167,13 @@ const verifyUser = async (req, res, _next) => {
     return res.json({
       status: "success",
       code: HttpCode.OK,
-      message: "Verification successful!",
+      message: "Verification successful",
     });
   }
   return res.status(HttpCode.NOT_FOUND).json({
     status: "error",
     code: HttpCode.NOT_FOUND,
-    message: "User not Found!",
+    message: "User not Found",
   });
 };
 
@@ -189,7 +185,7 @@ const repeatEmailForVerifyUser = async (req, res, next) => {
     return res.status(HttpCode.BAD_REQUEST).json({
       status: "error",
       code: HttpCode.BAD_REQUEST,
-      message: "Verification has already been passed!",
+      message: "Verification has already been passed",
     });
   }
 
@@ -205,7 +201,7 @@ const repeatEmailForVerifyUser = async (req, res, next) => {
     status: "success",
     code: HttpCode.OK,
     data: {
-      message: "Verification email sent!",
+      message: "Verification email sent",
     },
   });
 };

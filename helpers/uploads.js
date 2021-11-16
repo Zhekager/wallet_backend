@@ -21,7 +21,7 @@ const upload = multer({
       return cb(null, true);
     }
 
-    cb(new CustomError(HttpCode.BAD_REQUEST, "A wrong format for avatar!"));
+    cb(new CustomError(HttpCode.BAD_REQUEST, "A wrong format for avatar"));
   },
 });
 

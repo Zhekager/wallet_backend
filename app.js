@@ -1,17 +1,22 @@
 const express = require("express");
+// const path = require("path");
 const logger = require("morgan");
 const cors = require("cors");
 const boolParser = require("express-query-boolean");
 const helmet = require("helmet");
 require("dotenv").config();
 const app = express();
-const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./swagger.json');
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("./swagger.json");
 //const AVATAR_OF_USERS = process.env.AVATAR_OF_USERS;
 const { HttpCode } = require("./helpers/constants");
-//const categoriesRouter = require("./routes/api/cftegories");
+//const categoriesRouter = require("./routes/api/categories");
 //const transactionsRouter = require("./routes/api/transactions");
 const usersRouter = require("./routes/api/users");
+
+//to check
+// const authRouter = require("./routes/api/auth");
+// require("dotenv").config({ path: path.join(__dirname, "../../.env") });
 
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 
@@ -26,7 +31,14 @@ app.use((req, _res, next) => {
   app.set("lang", req.acceptsLanguages(["en", "ru"]));
   next();
 });
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+//to check
+// app.use("/auth", authRouter);
+// app.use("/link", (_req, res) => {
+//   res.sendFile(path.join(__dirname, ".public/link.html"));
+// });
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use("/api/users", usersRouter);
 //app.use("/api/transactions", transactionsRouter);
