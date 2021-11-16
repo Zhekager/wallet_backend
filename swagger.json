@@ -16,7 +16,9 @@
         "application/json"
     ],
     "servers": [
-        {"url": "http://localhost:3000/"}
+        {
+            "url": "http://localhost:3000/"
+        }
     ],
     "tags": [
         {
@@ -46,7 +48,21 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "user@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "qwerty123"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Tom"
+                                    }
+                                }
                             }
                         }
                     }
@@ -54,15 +70,97 @@
                 "responses": {
                     "201": {
                         "description": "Successful operation",
-                        "content": {}
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "description": "responses status",
+                                            "example": "success"
+                                        },
+                                        "code": {
+                                            "type": "string",
+                                            "description": "responses code",
+                                            "example": "201"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "description": "responses message",
+                                            "example": "User created"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "description": "responses data",
+                                            "example": {
+                                                "id": "60d9f35e8a52085120891b18",
+                                                "name": "Tom",
+                                                "email": "user@example.com",
+                                                "avatar": "https://path.to.user.avatar",
+                                                "successEmail": true
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     },
-                    "400": {
-                        "description": "Bad request (invalid request body)",
-                        "content": {}
+                    "404": {
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     },
                     "409": {
                         "description": "Provided email already exists",
-                        "content": {}
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "code": {
+                                            "type": "number",
+                                            "example": "409"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Email is already in use"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Field email must be a valid email"
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -80,7 +178,17 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "user@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "qwerty123"
+                                    }
+                                }
                             }
                         }
                     }
@@ -88,15 +196,61 @@
                 "responses": {
                     "200": {
                         "description": "Successful operation",
-                        "content": {}
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "description": "responses status",
+                                            "example": "success"
+                                        },
+                                        "code": {
+                                            "type": "string",
+                                            "description": "responses code",
+                                            "example": "200"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "description": "responses code",
+                                            "example": "You have logged in"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "description": "responses data",
+                                            "example": {
+                                                "token": "User token"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     },
-                    "400": {
-                        "description": "Bad request (invalid request body)",
-                        "content": {}
-                    },
-                    "403": {
+                    "401": {
                         "description": "Email doesn't exist / Password is wrong",
-                        "content": {}
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "code": {
+                                            "type": "number",
+                                            "example": "401"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Email or password is wrong"
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -138,15 +292,21 @@
                 "tags": [
                     "Users"
                 ],
-                "summary": "User verify",
+                "summary": "User verification via e-mail",
                 "parameters": [],
                 "requestBody": {
-                    "description": "Verification",
+                    "description": "Resending email verification",
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "user@example.com"
+                                    }
+                                }
                             }
                         }
                     }
@@ -172,14 +332,14 @@
                 "tags": [
                     "Users"
                 ],
-                "summary": "Google authentication. ",
+                "summary": "Google authentication ",
                 "responses": {
                     "200": {
                         "description": "Successful operation",
                         "content": {}
                     },
                     "403": {
-                        "description": "Not registered",
+                        "description": "Not registered or registered with postman",
                         "content": {}
                     }
                 }
@@ -219,6 +379,11 @@
                     "Users"
                 ],
                 "summary": "verifyToken",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Successful operation (redirect to front-end with token in query). Then use GET /user/info",
@@ -230,6 +395,92 @@
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "content": {}
+                    },
+                    "security": [
+                        {
+                            "Bearer": []
+                        }
+                    ]
+                }
+            }
+        },
+        "/api/users/avatars": {
+            "patch": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "User avatar",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "parameters": [
+                    {
+                        "name": "avatar",
+                        "in": "query",
+                        "description": "upload a new avatar",
+                        "required": true,
+                        "style": "form",
+                        "explode": true,
+                        "schema": {
+                            "type": "file"
+                        }
+                    }
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {}
+                    },
+                    "security": [
+                        {
+                            "Bearer": []
+                        }
+                    ]
+                }
+            }
+        },
+        "/api/users/update": {
+            "put": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "User info update",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [],
+                "requestBody": {
+                    "description": "User info change",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Nick"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {}
+                    },
+                    "404": {
+                        "description": "User not found",
                         "content": {}
                     },
                     "security": [
@@ -300,7 +551,7 @@
                                     "properties": {
                                         "status": {
                                             "type": "string",
-                                            "example" : "Success"
+                                            "example": "Success"
                                         },
                                         "code": {
                                             "type": "number",
@@ -331,8 +582,8 @@
                                                     "example": "comment"
                                                 },
                                                 "balance": {
-                                                   "type": "Number",
-                                                    "example": "5000" 
+                                                    "type": "Number",
+                                                    "example": "5000"
                                                 },
                                                 "categoryId": {
                                                     "type": "string",
@@ -358,7 +609,6 @@
                                                     "type": "string",
                                                     "example": "2021-11-14T20:23"
                                                 }
-
                                             }
                                         }
                                     }
@@ -381,54 +631,54 @@
                                             "type": "number",
                                             "example": "400"
                                         }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized (invalid access token)",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "status": {
-                                            "type": "string",
-                                            "example": "Error"
-                                        },
-                                        "code": {
-                                            "type": "number",
-                                            "example": "401"
-                                        }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "status": {
-                                            "type": "string",
-                                            "example": "Fail"
-                                        },
-                                        "code": {
-                                            "type": "number",
-                                            "example": "500"
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Internal Server Error"
+                                    }
+                                },
+                                "401": {
+                                    "description": "Unauthorized (invalid access token)",
+                                    "content": {
+                                        "application/json": {
+                                            "schema": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "status": {
+                                                        "type": "string",
+                                                        "example": "Error"
+                                                    },
+                                                    "code": {
+                                                        "type": "number",
+                                                        "example": "401"
+                                                    }
+                                                }
+                                            },
+                                            "500": {
+                                                "description": "Internal Server Error",
+                                                "content": {
+                                                    "application/json": {
+                                                        "schema": {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "status": {
+                                                                    "type": "string",
+                                                                    "example": "Fail"
+                                                                },
+                                                                "code": {
+                                                                    "type": "number",
+                                                                    "example": "500"
+                                                                },
+                                                                "message": {
+                                                                    "type": "string",
+                                                                    "example": "Internal Server Error"
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
                                         }
                                     }
                                 }
                             }
                         }
-                    }
-                }
-            }
-        }
-    }
-}
                     }
                 }
             }
@@ -438,14 +688,13 @@
                 "tags": [
                     "Transactions"
                 ],
-                "summary": "Get all transaction. Can be filtered by month and year",
+                "summary": "Get all transactions. Can be filtered by month and year",
                 "security": [
                     {
                         "Bearer": []
                     }
                 ],
-                "parameters": [
-                ],
+                "parameters": [],
                 "responses": {
                     "200": {
                         "description": "Successful operation",
@@ -467,85 +716,84 @@
                                             "properties": {
                                                 "docs": [
                                                     {
-                                                    "type": "array",
-                                                    "items": {
-                                                        "type": "object",
-                                                        "properties": {
-                                                            "transType": {
-                                                                "type": "string",
-                                                                "description": "'spend' or 'income'",
-                                                                "example": "income"
-                                                            },
-                                                            "_id": {
-                                                                "type": "string",
-                                                                "example": "hg63576538hvhdjjb763875687"
-                                                            },
-                                                            "date": {
-                                                                "type": "string",
-                                                                "example": "14.11.2021"
-                                                            },
-                                                            "sum": {
-                                                                "type": "Number",
-                                                                "example": "1000"
-                                                            },
-                                                            "comment": {
-                                                                "type": "string",
-                                                                "example": "comment"
-                                                            },
-                                                            "balance": {
-                                                                "type": "Number",
-                                                                "example": "5000"
-                                                            },
-                                                            "categoryId": {
-                                                                "type": "string",
-                                                                "properties": {
-                                                                    "_id": {
-                                                                        "type": "string",
-                                                                        "example": "hgh467676386gf3742363"
-                                                                    },
-                                                                    "value": {
-                                                                        "type": "string",
-                                                                        "example": "Еда"
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "transType": {
+                                                                    "type": "string",
+                                                                    "description": "'spend' or 'income'",
+                                                                    "example": "income"
+                                                                },
+                                                                "_id": {
+                                                                    "type": "string",
+                                                                    "example": "hg63576538hvhdjjb763875687"
+                                                                },
+                                                                "date": {
+                                                                    "type": "string",
+                                                                    "example": "14.11.2021"
+                                                                },
+                                                                "sum": {
+                                                                    "type": "Number",
+                                                                    "example": "1000"
+                                                                },
+                                                                "comment": {
+                                                                    "type": "string",
+                                                                    "example": "comment"
+                                                                },
+                                                                "balance": {
+                                                                    "type": "Number",
+                                                                    "example": "5000"
+                                                                },
+                                                                "categoryId": {
+                                                                    "type": "string",
+                                                                    "properties": {
+                                                                        "_id": {
+                                                                            "type": "string",
+                                                                            "example": "hgh467676386gf3742363"
+                                                                        },
+                                                                        "value": {
+                                                                            "type": "string",
+                                                                            "example": "Еда"
+                                                                        }
                                                                     }
-                                                                }
-                                                            },
-                                                            "owner": {
-                                                                "type": "object",
-                                                                "properties":{
-                                                                    "_id": {
-                                                                        "type": "string",
-                                                                        "example": "hgh467676386gf3742363"
-                                                                    },
-                                                                    "name": {
-                                                                        "type": "string",
-                                                                        "example": "Tetiana"
-                                                                    },
-                                                                    "email": {
-                                                                        "type": "string",
-                                                                        "format": "email",
-                                                                        "example": "tetiana@gmail.com"
+                                                                },
+                                                                "owner": {
+                                                                    "type": "object",
+                                                                    "properties": {
+                                                                        "_id": {
+                                                                            "type": "string",
+                                                                            "example": "hgh467676386gf3742363"
+                                                                        },
+                                                                        "name": {
+                                                                            "type": "string",
+                                                                            "example": "Tetiana"
+                                                                        },
+                                                                        "email": {
+                                                                            "type": "string",
+                                                                            "format": "email",
+                                                                            "example": "tetiana@gmail.com"
+                                                                        }
                                                                     }
+                                                                },
+                                                                "month": {
+                                                                    "type": "Number",
+                                                                    "example": "11"
+                                                                },
+                                                                "year": {
+                                                                    "type": "Number",
+                                                                    "example": "2021"
+                                                                },
+                                                                "createdAt": {
+                                                                    "type": "string",
+                                                                    "example": "2021-11-14T20:23"
+                                                                },
+                                                                "updatedAt": {
+                                                                    "type": "string",
+                                                                    "example": "2021-11-14T20:23"
                                                                 }
-                                                                
-                                                            },
-                                                            "month": {
-                                                                "type": "Number",
-                                                                "example": "11"
-                                                            },
-                                                            "year": {
-                                                                "type": "Number",
-                                                                "example": "2021"
-                                                            },
-                                                            "createdAt": {
-                                                                "type": "string",
-                                                                "example": "2021-11-14T20:23"
-                                                            },
-                                                            "updatedAt": {
-                                                                "type": "string",
-                                                                "example": "2021-11-14T20:23"
                                                             }
                                                         }
-                                                    }
                                                     }
                                                 ]
                                             },
@@ -1205,7 +1453,53 @@
     "components": {
         "schemas": {
             "User": {
-
+                "type": "object",
+                "properties": {
+                    "_id": {
+                        "type": "string",
+                        "example": "6193b4f36a453535c5b9cfe3"
+                    },
+                    "password": {
+                        "type": "string",
+                        "example": "$2a$10$7/ZJpglAhQnMKAmshacmSe.Gx8pMni4jDIVPykJ9.gGobeZCsYqou"
+                    },
+                    "email": {
+                        "type": "string",
+                        "example": "user@example.com"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Nick"
+                    },
+                    "token": {
+                        "type": "string",
+                        "example": "user token"
+                    },
+                    "idUserCloud": {
+                        "type": "string",
+                        "example": "n8wzoryzzbyojdunoqmf"
+                    },
+                    "verify": {
+                        "type": "boolean",
+                        "example": "true"
+                    },
+                    "verifyToken": {
+                        "type": "string",
+                        "example": "token"
+                    },
+                    "avatarURL": {
+                        "type": "string",
+                        "example": "https://path.to.user.avatar"
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "example": "2021-11-16T13:41:07.193+00:00"
+                    },
+                    "updatedAt": {
+                        "type": "string",
+                        "example": "2021-11-16T13:48:44.991+00:00"
+                    }
+                }
             },
             "Transaction": {
                 "type": "object",
@@ -1279,7 +1573,7 @@
                 }
             }
         }
-    }, 
+    },
     "securitySchemes": {
         "Bearer": {
             "type": "http",
