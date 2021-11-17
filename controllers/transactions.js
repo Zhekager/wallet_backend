@@ -31,27 +31,30 @@ const getTransactionById = async (req, res) => {
 };
 
 const addTransaction = async (req, res, next) => {
-    const { _id: userId } = req.user;
-    const { sum, type } = req.body;
-    const sumNumber = parseInt(sum);
-    const balance = Number(req.user?.balance)
+    try {
+        const userId = req.user?.id;
+        const balance = req.user?.balance;
+        const { sum, type } = req.body;
+        const sumNumber = parseInt(sum);
 
-    const transactionBalance = countBalance(type, balance, sumNumber);
+        const transactionBalance = countBalance(type, balance, sumNumber);
 
-    await User.addBalance(userId, transactionBalance);
+        await User.addBalance(userId, transactionBalance);
 
-    const transaction = await Transactions.addTransaction({
-        ...req.body,
-        owner: userId,
-        balance: transactionBalance,
-    });
-    res.status(HttpCode.CREATED).json({
-        status: "Success",
-        code: HttpCode.CREATED,
-        data: { transaction },
-    });
-    throw new CustomError(HttpCode.NOT_FOUND, 'Not Found');
-
+        const transaction = await Transactions.addTransaction({
+            ...req.body,
+            owner: userId,
+            balance: transactionBalance,
+        });
+        res.status(HttpCode.CREATED).json({
+            status: "Success",
+            code: HttpCode.CREATED,
+            data: { transaction },
+        });
+        
+    } catch (error) {
+        next(error);
+    }
 };
 
 // const addTransaction = async (req, res, next) => {

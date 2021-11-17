@@ -6,13 +6,15 @@ const {
     addTransaction,
     //removeTransaction,
     //updateTransaction,
+    getTransForTheMonth,
+    getTransactionsByYear,
 } = require('../../controllers/transactions');
 const guard = require('../../helpers/guard');
 
-router.get('/', getTransactions);
+router.get('/', guard, getTransactions);
 router.get('/:transId', guard, getTransactionById);
 //router.get('/month', guard, getTransForTheMonth);
-//router.get('/statistic', guard, getStatistic);
+router.get('/year', guard, getTransactionsByYear);
 router.post('/', guard, addTransaction);
 //router.delete('/:transId', guard, removeTransaction);
 //router.patch('/:transId', guard, updateTransaction);
