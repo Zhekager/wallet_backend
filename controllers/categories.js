@@ -8,7 +8,7 @@ const getCategories = async (req, res) => {
         status: 'Success',
         code: HttpCode.OK,
         message: 'Categories found',
-        data: { ...data }
+        data: [...data],
     });
 };
 

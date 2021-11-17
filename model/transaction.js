@@ -3,55 +3,42 @@ const mongoosePaginate = require('mongoose-paginate-v2');
 
 const transactionSchema = new Schema(
     {
-        transType: {
+        type: {
             type: String,
-            enum: ['spend', 'income'],
-            default: 'spend',
+            enum: ["+", "-"],
+            require: true,
+        },
+        date: {
+            type: String,
             required: true,
         },
-
-        date: {
-            type: Date,
-            min: '2020-01-01',
-            required: true,
-            },
-        
         month: {
             type: Number,
-            required: true,
         },
-
         year: {
             type: Number,
-            required: true,
         },
-
         sum: {
             type: Number,
-            required: [true, 'Укажите сумму транзакции'],
+            required: true,
+            set: (data) => parseInt(data),
         },
-
+        categoryId: {
+            type: String,
+            required: true,
+        },
         balance: {
             type: Number,
-            required: true,
-            },
-        
+        },
         comment: {
             type: String,
-            maxlength: 250,
-            default: null,
-            },
-        
-        categoryId: {
-            type: Schema.Types.ObjectId,
-            ref: 'categories',
-            required: true,
+            maxlength: 50,
+            default: '',
         },
-        
         owner: {
             type: Schema.Types.ObjectId,
+            //required: true,
             ref: 'user',
-            required: true,
         },
     },
     {
@@ -60,9 +47,12 @@ const transactionSchema = new Schema(
         toJSON: {
             virtuals: true,
             transform: function (doc, ret) {
-                delete ret._id
-                return ret
+                delete ret._id;
+                return ret;
             },
+        },
+        toObject: {
+            virtuals: true,
         },
     },
 );
@@ -70,5 +60,7 @@ const transactionSchema = new Schema(
 transactionSchema.plugin(mongoosePaginate);
 
 const Transaction = model('transaction', transactionSchema);
-
+// transactionSchema.virtual('info').get(function () {
+//     return `This is transaction ${this.owner}`
+// })
 module.exports = Transaction;

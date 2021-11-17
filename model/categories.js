@@ -1,13 +1,21 @@
-const { Schema } = require('mongoose');
+const { Schema, model } = require('mongoose');
 
 const categorySchema = new Schema(
     {
-        categoryName: {
-            type: String,
-            required: [true, 'Укажите название категории'],
+        name: { type: String },
+        color: { type: String },
+    },
+    {
+        versionKey: false,
+        timestamps: true,
+        toJSON: {
+            virtuals: false,
+            transform: function (doc, ret) {
+                delete ret._id;
+                return ret;
+            },
         },
     },
-    { versionKey: false, timestamps: true },
 );
 
 const Category = model('category', categorySchema);

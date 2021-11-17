@@ -8,8 +8,8 @@ const {
   currentUser,
   updateUserInfo,
   uploadAvatar,
-  verifyUser,
-  repeatEmailForVerifyUser,
+  //verifyUser,
+  //repeatEmailForVerifyUser,
 } = require("../../controllers/users");
 
 const {
@@ -30,8 +30,8 @@ router.get("/current", guard, currentUser);
 
 router.patch("/avatars", guard, upload.single("avatar"), uploadAvatar);
 
-router.get("/verify/:verifyToken", wrapError(verifyUser));
-router.post("/verify", validateResendingEmail, repeatEmailForVerifyUser);
+//router.get("/verify/:verifyToken", wrapError(verifyUser));
+//router.post("/verify", validateResendingEmail, repeatEmailForVerifyUser);
 
 router.put("/update", guard, updateUserInfo);
 

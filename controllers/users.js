@@ -5,8 +5,8 @@ const fs = require("fs").promises;
 const UploadService = require("../services/cloud-upload");
 const { HttpCode } = require("../helpers/constants");
 
-const EmailService = require("../services/email/service");
-const { CreateSenderSendGrid } = require("../services/email/sender");
+//const EmailService = require("../services/email/service");
+//const { CreateSenderSendGrid } = require("../services/email/sender");
 
 require("dotenv").config();
 const SECRET_KEY = process.env.JWT_SECRET_KEY;
@@ -28,15 +28,15 @@ const signup = async (req, res, next) => {
       password,
       subscription,
     });
-    const emailService = new EmailService(
-      process.env.NODE_ENV,
-      new CreateSenderSendGrid()
-    );
-    const statusEmail = await emailService.sendVerifyEmail(
-      newUser.email,
-      newUser.name,
-      newUser.verifyToken
-    );
+    // const emailService = new EmailService(
+    //   process.env.NODE_ENV,
+    //   new CreateSenderSendGrid()
+    // );
+    // const statusEmail = await emailService.sendVerifyEmail(
+    //   newUser.email,
+    //   newUser.name,
+    //   newUser.verifyToken
+    // );
     return res.status(HttpCode.CREATED).json({
       status: "success",
       code: HttpCode.CREATED,
@@ -47,7 +47,7 @@ const signup = async (req, res, next) => {
         email: newUser.email,
         subscription: newUser.subscription,
         avatar: newUser.avatarURL,
-        successEmail: statusEmail,
+        //successEmail: statusEmail,
       },
     });
   } catch (error) {
@@ -65,13 +65,13 @@ const login = async (req, res) => {
       : await user.isValidPassword(password);
 
   // if (!user || !isValidPassword || !user?.verify) {
-  if (!user || !isValidPassword || (!user === true && user.verify)) {
-    return res.status(HttpCode.UNAUTHORIZED).json({
-      status: "error",
-      code: HttpCode.UNAUTHORIZED,
-      message: "Email or password is wrong",
-    });
-  }
+  // if (!user || !isValidPassword || (!user === true && user.verify)) {
+  //   return res.status(HttpCode.UNAUTHORIZED).json({
+  //     status: "error",
+  //     code: HttpCode.UNAUTHORIZED,
+  //     message: "Email or password is wrong",
+  //   });
+  // }
   const id = user._id;
   const payload = { id };
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "4h" });
@@ -214,5 +214,5 @@ module.exports = {
   updateUserInfo,
   uploadAvatar,
   verifyUser,
-  repeatEmailForVerifyUser,
+  //repeatEmailForVerifyUser,
 };
