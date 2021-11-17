@@ -1,13 +1,13 @@
-const sgMail = require("@sendgrid/mail");
-// const nodemailer = require("nodemailer");
-require("dotenv").config();
+// const sgMail = require("@sendgrid/mail");
+// // const nodemailer = require("nodemailer");
+// require("dotenv").config();
 
-class CreateSenderSendGrid {
-  async send(msg) {
-    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-    return await sgMail.send({ ...msg, from: process.env.FIRST_SENDER_EMAIL });
-  }
-}
+// class CreateSenderSendGrid {
+//   async send(msg) {
+//     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+//     return await sgMail.send({ ...msg, from: process.env.FIRST_SENDER_EMAIL });
+//   }
+// }
 
 // class CreateSenderNodemailer {
 //   async send(msg) {
@@ -28,4 +28,4 @@ class CreateSenderSendGrid {
 //   }
 // }
 
-module.exports = { CreateSenderSendGrid, };
+//module.exports = { CreateSenderSendGrid, };

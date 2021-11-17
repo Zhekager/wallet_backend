@@ -28,6 +28,9 @@ const userSchema = new Schema(
       type: String,
       default: null,
     },
+    balance: {
+      type: Number,
+    },
     avatarURL: {
       type: String,
       default: function () {
@@ -36,15 +39,15 @@ const userSchema = new Schema(
     },
     idUserCloud: { type: String, default: null },
 
-    verify: {
-      type: Boolean,
-      default: false,
-    },
-    verifyToken: {
-      type: String,
-      required: [true, "Verify token is required"],
-      default: uuidv4(),
-    },
+    // verify: {
+    //   type: Boolean,
+    //   default: false,
+    // },
+    // verifyToken: {
+    //   type: String,
+    //   required: [true, "Verify token is required"],
+    //   default: uuidv4(),
+    // },
   },
 
   {

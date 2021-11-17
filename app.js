@@ -10,8 +10,8 @@ const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./swagger.json");
 //const AVATAR_OF_USERS = process.env.AVATAR_OF_USERS;
 const { HttpCode } = require("./helpers/constants");
-//const categoriesRouter = require("./routes/api/categories");
-//const transactionsRouter = require("./routes/api/transactions");
+const categoriesRouter = require("./routes/api/categories");
+const transactionsRouter = require("./routes/api/transactions");
 const usersRouter = require("./routes/api/users");
 
 //to check
@@ -41,8 +41,8 @@ app.use((req, _res, next) => {
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use("/api/users", usersRouter);
-//app.use("/api/transactions", transactionsRouter);
-//app.use("/api/categories", categoriesRouter);
+app.use("/api/transactions", transactionsRouter);
+app.use("/api/categories", categoriesRouter);
 
 app.use((req, res) => {
   res.status(HttpCode.NOT_FOUND).json({ message: "Not found" });
