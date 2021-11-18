@@ -17,8 +17,7 @@ const guard = (req, res, next) => {
     //   ? undefined
     //   : req.get("Authorization").split(" ")[1];
 
-    // const token =
-    //   req.get("Authorization") && req.get("Authorization").split(" ")[1];
+     //const token = req.get("Authorization") && req.get("Authorization").split(" ")[1];
 
 
     if (!user || err || token !== user.token) {
