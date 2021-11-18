@@ -1,58 +1,101 @@
-const { Schema, SchemaTypes, model } = require('mongoose');
-const mongoosePaginate = require('mongoose-paginate-v2');
+const { Schema, SchemaTypes, model } = require("mongoose");
+const mongoosePaginate = require("mongoose-paginate-v2");
 
 const transactionSchema = new Schema(
-    {
-        isExpense: {
-            type: Boolean,
-            default: true
-        },
-        date: {
-            type: Date,
+/////////////////////////////////////////////////////////////////////////////
+//     {
+//         isExpense: {
+//             type: Boolean,
+//             default: true
+//         },
+//         date: {
+//             type: Date,
             
-        },
-        month: {
-            type: Number,
-        },
-        year: {
-            type: Number,
-        },
-        sum: {
-            type: Number,
-            required: true,
-            //set: (data) => parseInt(data),
-        },
-        category: {
-            type: SchemaTypes.ObjectId,
-            ref: 'category',
-        },
-        balance: {
-            type: Number,
-        },
-        comment: {
-            type: String,
-            maxlength: 50,
-            default: '',
-        },
-        owner: {
-            type: SchemaTypes.ObjectId,
-            ref: 'user',
-        },
+//         },
+//         month: {
+//             type: Number,
+//         },
+//         year: {
+//             type: Number,
+//         },
+//         sum: {
+//             type: Number,
+//             required: true,
+//             //set: (data) => parseInt(data),
+//         },
+//         category: {
+//             type: SchemaTypes.ObjectId,
+//             ref: 'category',
+//         },
+//         balance: {
+//             type: Number,
+//         },
+//         comment: {
+//             type: String,
+//             maxlength: 50,
+//             default: '',
+//         },
+//         owner: {
+//             type: SchemaTypes.ObjectId,
+//             ref: 'user',
+//         },
+/////////////////////////////////////////////////////////////////////////////////
+  //це кусочок кода з яким був конфлікт
+  {
+    type: {
+      type: String,
+      enum: ["+", "-"],
+      require: true,
+ ////////////////////////////////////////////////////////////////////////////////////////////////////     
+
     },
-    {
-        versionKey: false,
-        timestamps: true,
-        toJSON: {
-            virtuals: true,
-            transform: function (doc, ret) {
-                delete ret._id;
-                return ret;
-            },
-        },
-        toObject: {
-            virtuals: true,
-        },
+    date: {
+      type: String,
+      required: true,
     },
+    month: {
+      type: Number,
+    },
+    year: {
+      type: Number,
+    },
+    sum: {
+      type: Number,
+      required: true,
+      set: (data) => parseInt(data),
+    },
+    categoryId: {
+      type: String,
+      required: true,
+    },
+    balance: {
+      type: Number,
+    },
+    comment: {
+      type: String,
+      maxlength: 50,
+      default: "",
+    },
+    owner: {
+      type: SchemaTypes.ObjectId,
+      required: true,
+      ref: "user",
+    },
+  },
+  {
+    versionKey: false,
+    timestamps: true,
+    toJSON: {
+      virtuals: true,
+      transform: function (doc, ret) {
+        delete ret._id;
+        return ret;
+      },
+    },
+    toObject: {
+      virtuals: true,
+    },
+  }
 );
 
 transactionSchema.virtual('type').get(function () {
@@ -69,7 +112,7 @@ transactionSchema.virtual('date_str').get(function () {
 
 transactionSchema.plugin(mongoosePaginate);
 
-const Transaction = model('transaction', transactionSchema);
+const Transaction = model("transaction", transactionSchema);
 // transactionSchema.virtual('info').get(function () {
 //     return `This is transaction ${this.owner}`
 // })
