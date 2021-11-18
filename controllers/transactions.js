@@ -1,16 +1,18 @@
 const Transactions = require('../repository/transactions');
 const User = require('../repository/users');
+const Categories = require('../repository/categories');
 const { HttpCode } = require('../helpers/constants');
 const { CustomError } = require('../helpers/customError');
 
 const getTransactions = async (req, res) => {
     const userId = req.user?._id;
-    const data = await Transactions.listTransactions(userId, req.query);
+    const { data, transactions } = await Transactions.listTransactions(userId, req.query);
+    const years = [...new Set(transactions.map(({ year }) => year))].sort();
     res.json({
         status: 'Success',
         code: HttpCode.OK,
         message: 'Transactions found',
-        data: { ...data }
+        data: {years, transactions, data }
     });
 };
 
@@ -32,12 +34,12 @@ const getTransactionById = async (req, res) => {
 
 const addTransaction = async (req, res, next) => {
     try {
-        const userId = req.user?.id;
-        const balance = req.user?.balance;
-        const { sum, type } = req.body;
+        const userId = req.user?._id;
+        const balanceUser = Number(req.user?.balance);
+        const { sum, isExpense } = req.body;
         const sumNumber = parseInt(sum);
 
-        const transactionBalance = countBalance(type, balance, sumNumber);
+        const transactionBalance = countBalance(isExpense, balanceUser, sumNumber);
 
         await User.addBalance(userId, transactionBalance);
 
@@ -59,12 +61,12 @@ const addTransaction = async (req, res, next) => {
 
 // const addTransaction = async (req, res, next) => {
 //     try {
-//         const { _id: userId} = req.user;
+//         const userId = req.user?._id;
 //         let transactionBalance;
 
-//             req.body.type === '+'
-//                 ? (transactionBalance = Number(req.body.balance) + Number(req.body.sum))
-//                 : (transactionBalance = Number(req.body.balance) - Number(req.body.sum));
+//             req.body.isExpense === true
+//                 ? (transactionBalance = Number(req.user?.balance) + Number(req.body.sum))
+//                 : (transactionBalance = Number(req.user?.balance) - Number(req.body.sum));
 
 //         const newTransactionBalance = await User.addBalance(userId, transactionBalance);
 //         const transaction = await Transactions.addTransaction({
@@ -128,45 +130,10 @@ const removeTransaction = async (req, res) => {
 //     throw new CustomError(HttpCode.NOT_FOUND, 'Not Found');
 // };
 
-const getTransForTheMonth = async (req, res) => {
-    const userId = req.user._id;
-    const monthDate = monthCounter(req.body.date);
-    const data = await Transaction.getTransforSpanOfTime(
-        userId,
-        req.query,
-        monthDate[0],
-        monthDate[1]
-    );
-    res.json({
-        status: 'Success',
-        code: HttpCode.OK,
-        message: 'Transaction deleted',
-        data: { ...data },
-    });
-    throw new CustomError(HttpCode.NOT_FOUND, 'Not Found');
-};
-
-const getTransactionsByYear = async (req, res) => {
-    const userId = req.user._id;
-    const YearDate = yearCounter(req.body.date);
-    const data = await Transaction.getTransYear(
-        userId,
-        req.query,
-        YearDate,
-    );
-    res.json({
-        status: 'Success',
-        code: HttpCode.OK,
-        message: 'Transaction deleted',
-        data: { ...data },
-    });
-    throw new CustomError(HttpCode.NOT_FOUND, 'Not Found');
-};
-
 // Balance
 
-const countBalance = (type, balance, payload) =>
-    type === "+" ? balance + payload : balance - payload;
+const countBalance = (isExpense, balance, payload) =>
+    isExpense === false ? balance + payload : balance - payload;
 
 
 module.exports = {
@@ -174,6 +141,4 @@ module.exports = {
     getTransactionById,
     addTransaction,
     removeTransaction,
-    getTransForTheMonth,
-    getTransactionsByYear,
 };

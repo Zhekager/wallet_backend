@@ -2,18 +2,29 @@ const Transaction = require('../model/transaction');
 
 const listTransactions = async (userId, query) => {
     const {
+        sortBy = 'date',
+        sortByDesc,
         limit = 5,
         page = 1,
+        filter,
     } = query;
     const searchOptions = { owner: userId };
     const results = await Transaction.paginate(searchOptions, {
         limit,
         page,
-        sort: { date: "desc" },
+        sort: {
+            ...(sortBy ? { [`${sortBy}`]: 1 } : {}),
+            ...(sortByDesc ? { [`${sortByDesc}`]: -1 } : {}),
+        },
+        select: filter ? filter.split('|').join(' ') : '',
+        populate: {
+            path: 'category',
+            select: 'color',
+        },
     });
-    const { docs: result } = results;
-    delete results.docs;
-    return { ...results, result };
+    const { docs: transactions, ...data} = results;
+    //delete results.docs;
+    return { data, transactions };
 };
 
 // const listTransactions = async (userId) => {
@@ -54,43 +65,21 @@ const updateTransaction = async (transId, body, userId) => {
     );
     return result;
 };
-// const getTransforSpanOfTime = async (
-//     userId,
-//     query,
-//     start_date,
-//     end_date
-// ) => {
-//     const { limit = 5, page = 1 } = query;
-//     const searchOptions = {
-//         owner: userId,
-//         date: { $gte: start_date, $lte: end_date },
-//     };
 
-//     const results = await Transaction.paginate(searchOptions, {
-//         limit,
-//         page,
-//         sort: { date: "desc" },
-//     });
-//     const { docs: result } = results;
-//     delete results.docs;
-//     return { ...results, result };
-// };
+const listTransStats = async (userId, month, year) => {
+    const allTransactions = await Transaction.find({ month, year });
 
-// const getTransYear = async (userId, query, year) => {
-//     const { limit = 5, page = 1 } = query;
-//     const searchOptions = {
-//         owner: userId,
-//         year: year,
-//     };
-//     const results = await Transaction.paginate(searchOptions, {
-//         limit,
-//         page,
-//         sort: { date: "desc" },
-//     });
-//     const { docs: result } = results;
-//     delete results.docs;
-//     return { ...results, result };
-// };
+    const stats = allTransactions.reduce((acc, { category, sum }) => {
+        const id = category.toString();
+
+        return {
+            ...acc,
+            [id]: acc[id] ? acc[id] + sum : sum,
+        };
+    }, {});
+
+    return stats;
+};
 
 module.exports = {
     listTransactions,
@@ -98,6 +87,5 @@ module.exports = {
     removeTransaction,
     addTransaction,
     updateTransaction,
-    //getTransforSpanOfTime,
-    //getTransYear,
+    listTransStats,
 };
