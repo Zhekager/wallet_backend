@@ -12,7 +12,7 @@ require("dotenv").config();
 const SECRET_KEY = process.env.JWT_SECRET_KEY;
 
 const signup = async (req, res, next) => {
-  const { name, email, password, subscription } = req.body;
+  const { name, email, password } = req.body;
   const user = await Users.findByEmail(email);
   if (user) {
     return res.status(HttpCode.CONFLICT).json({
@@ -26,7 +26,6 @@ const signup = async (req, res, next) => {
       name,
       email,
       password,
-      subscription,
     });
     // const emailService = new EmailService(
     //   process.env.NODE_ENV,
@@ -45,7 +44,6 @@ const signup = async (req, res, next) => {
         id: newUser.id,
         name: newUser.name,
         email: newUser.email,
-        subscription: newUser.subscription,
         avatar: newUser.avatarURL,
         //successEmail: statusEmail,
       },
@@ -60,7 +58,7 @@ const login = async (req, res) => {
   const user = await Users.findByEmail(email);
   // const isValidPassword = await user?.isValidPassword(password);
   const isValidPassword =
-    (await user) === null || (await user) === undefined
+    ((await user) === null || (await user) === undefined
       ? undefined
       : await user.isValidPassword(password);
 
@@ -95,7 +93,7 @@ const logout = async (req, res) => {
 const currentUser = async (req, res, next) => {
   try {
     const id = req.user._id;
-    const { name, email, subscription } = req.user;
+    const { name, email } = req.user;
     return res.status(HttpCode.OK).json({
       status: "success",
       code: HttpCode.OK,
@@ -103,7 +101,6 @@ const currentUser = async (req, res, next) => {
         id,
         name,
         email,
-        subscription,
       },
     });
   } catch (error) {

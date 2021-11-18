@@ -2,7 +2,7 @@
 // const axios = require("axios");
 // // const URL = require("url");
 
-// exports.googleAuth = async (req, res) => {
+// const googleAuth = async (req, res) => {
 //   const stringifiedParams = queryString.stringify({
 //     client_id: process.env.GOOGLE_CLIENT_ID,
 //     redirect_uri: `${process.env.BASE_URL}/auth/google-redirect`,
@@ -19,7 +19,7 @@
 //   );
 // };
 
-// exports.googleRedirect = async (req, res) => {
+// const googleRedirect = async (req, res) => {
 //   const fullUrl = `${req.protocol}://${req.get("host")}${req.originalUrl}`;
 //   const urlObj = new URL(fullUrl);
 //   const urlParams = queryString.parse(urlObj.search);
@@ -49,4 +49,9 @@
 //   return res.redirect(
 //     `${process.env.FRONTEND_URL}?email=${userData.data.email}`
 //   );
+// };
+
+// module.exports = {
+//   googleAuth,
+//   googleRedirect,
 // };
