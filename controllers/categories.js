@@ -2,7 +2,7 @@ const Categories = require('../repository/categories');
 const { HttpCode } = require('../helpers/constants');
 
 
-const getCategories = async (req, res) => {
+const getCategories = async (_req, res) => {
     const data = await Categories.listCategories();
 
     const expenses = data.filter(({ isExpense }) => isExpense);

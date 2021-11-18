@@ -60,7 +60,7 @@ const login = async (req, res) => {
   const isValidPassword =
     ((await user) === null || (await user) === undefined
       ? undefined
-      : await user.isValidPassword(password);
+      : await user.isValidPassword(password))
 
   // if (!user || !isValidPassword || !user?.verify) {
   // if (!user || !isValidPassword || (!user === true && user.verify)) {

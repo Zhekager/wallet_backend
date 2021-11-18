@@ -1,57 +1,15 @@
-const { Schema, SchemaTypes, model } = require("mongoose");
-const mongoosePaginate = require("mongoose-paginate-v2");
+const { Schema, SchemaTypes, model } = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate-v2');
 
 const transactionSchema = new Schema(
-/////////////////////////////////////////////////////////////////////////////
-//     {
-//         isExpense: {
-//             type: Boolean,
-//             default: true
-//         },
-//         date: {
-//             type: Date,
-            
-//         },
-//         month: {
-//             type: Number,
-//         },
-//         year: {
-//             type: Number,
-//         },
-//         sum: {
-//             type: Number,
-//             required: true,
-//             //set: (data) => parseInt(data),
-//         },
-//         category: {
-//             type: SchemaTypes.ObjectId,
-//             ref: 'category',
-//         },
-//         balance: {
-//             type: Number,
-//         },
-//         comment: {
-//             type: String,
-//             maxlength: 50,
-//             default: '',
-//         },
-//         owner: {
-//             type: SchemaTypes.ObjectId,
-//             ref: 'user',
-//         },
-/////////////////////////////////////////////////////////////////////////////////
-  //це кусочок кода з яким був конфлікт
   {
-    type: {
-      type: String,
-      enum: ["+", "-"],
-      require: true,
- ////////////////////////////////////////////////////////////////////////////////////////////////////     
-
+    isExpense: {
+      type: Boolean,
+      default: true
     },
     date: {
-      type: String,
-      required: true,
+      type: Date,
+
     },
     month: {
       type: Number,
@@ -62,11 +20,11 @@ const transactionSchema = new Schema(
     sum: {
       type: Number,
       required: true,
-      set: (data) => parseInt(data),
+      //set: (data) => parseInt(data),
     },
-    categoryId: {
-      type: String,
-      required: true,
+    category: {
+      type: SchemaTypes.ObjectId,
+      ref: 'category',
     },
     balance: {
       type: Number,
@@ -74,12 +32,11 @@ const transactionSchema = new Schema(
     comment: {
       type: String,
       maxlength: 50,
-      default: "",
+      default: '',
     },
     owner: {
       type: SchemaTypes.ObjectId,
-      required: true,
-      ref: "user",
+      ref: 'user',
     },
   },
   {
@@ -95,24 +52,24 @@ const transactionSchema = new Schema(
     toObject: {
       virtuals: true,
     },
-  }
+  },
 );
 
 transactionSchema.virtual('type').get(function () {
-    return this.isExpense ? '-' : '+';
+  return this.isExpense ? '-' : '+';
 });
 
 transactionSchema.virtual('date_str').get(function () {
-    const dd = this.date.getDate();
-    const mm = this.date.getMonth() + 1;
-    const yyyy = this.date.getFullYear();
+  const dd = this.date.getDate();
+  const mm = this.date.getMonth() + 1;
+  const yyyy = this.date.getFullYear();
 
-    return `${dd}.${mm}.${yyyy}`;
+  return `${dd}.${mm}.${yyyy}`;
 });
 
 transactionSchema.plugin(mongoosePaginate);
 
-const Transaction = model("transaction", transactionSchema);
+const Transaction = model('transaction', transactionSchema);
 // transactionSchema.virtual('info').get(function () {
 //     return `This is transaction ${this.owner}`
 // })
