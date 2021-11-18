@@ -1,3 +1,21 @@
+/////////////////////////////////////////////////////////////////////////////////////
+// const Transactions = require('../repository/transactions');
+// const User = require('../repository/users');
+// const Categories = require('../repository/categories');            <= зміни в коді
+// const { HttpCode } = require('../helpers/constants');
+// const { CustomError } = require('../helpers/customError');
+
+// const getTransactions = async (req, res) => {
+//     const userId = req.user?._id;
+//     const { data, transactions } = await Transactions.listTransactions(userId, req.query);   <= зміни в коді
+//     const years = [...new Set(transactions.map(({ year }) => year))].sort();                  <= зміни в коді
+//     res.json({
+//         status: 'Success',
+//         code: HttpCode.OK,
+//         message: 'Transactions found',
+//         data: {years, transactions, data }                    <= зміни в коді
+//     });
+//////////////////////////////////////////////////////////////////////////////////////////////
 const Transactions = require("../repository/transactions");
 const User = require("../repository/users");
 const { HttpCode } = require("../helpers/constants");
@@ -13,6 +31,7 @@ const getTransactions = async (req, res) => {
     message: "Transactions found",
     data: { ...data },
   });
+////////////////////////////////////////////////////////////////////////////////////////////////////
 };
 
 const getTransactionById = async (req, res) => {
@@ -35,6 +54,32 @@ const getTransactionById = async (req, res) => {
 };
 
 const addTransaction = async (req, res, next) => {
+////////////////////////////////////////////////////////////////////////////////////
+//     try {
+//         const userId = req.user?._id;
+//         const balanceUser = Number(req.user?.balance);    <= зміни в коді
+//         const { sum, isExpense } = req.body;          <= зміни в коді
+//         const sumNumber = parseInt(sum);
+
+//         const transactionBalance = countBalance(isExpense, balanceUser, sumNumber);  <= зміни в коді
+
+//         await User.addBalance(userId, transactionBalance);
+
+//         const transaction = await Transactions.addTransaction({
+//             ...req.body,
+//             owner: userId,
+//             balance: transactionBalance,
+//         });
+//         res.status(HttpCode.CREATED).json({
+//             status: "Success",
+//             code: HttpCode.CREATED,
+//             data: { transaction },
+//         });
+        
+//     } catch (error) {
+//         next(error);
+//     }
+/////////////////////////////////////////////////////////////////////////////////////////////////
   try {
     const userId = req.user?.id;
     // const userId = req.user && req.user.id;
@@ -60,6 +105,7 @@ const addTransaction = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+
 };
 
 // const addTransaction = async (req, res, next) => {
@@ -87,12 +133,12 @@ const addTransaction = async (req, res, next) => {
 
 // const addTransaction = async (req, res, next) => {
 //     try {
-//         const { _id: userId} = req.user;
+//         const userId = req.user?._id;
 //         let transactionBalance;
 
-//             req.body.type === '+'
-//                 ? (transactionBalance = Number(req.body.balance) + Number(req.body.sum))
-//                 : (transactionBalance = Number(req.body.balance) - Number(req.body.sum));
+//             req.body.isExpense === true
+//                 ? (transactionBalance = Number(req.user?.balance) + Number(req.body.sum))
+//                 : (transactionBalance = Number(req.user?.balance) - Number(req.body.sum));
 
 //         const newTransactionBalance = await User.addBalance(userId, transactionBalance);
 //         const transaction = await Transactions.addTransaction({
@@ -159,6 +205,20 @@ const removeTransaction = async (req, res) => {
 //     throw new CustomError(HttpCode.NOT_FOUND, 'Not Found');
 // };
 
+/////////////////////////////////////////////////////////////////////
+// Balance
+
+// const countBalance = (isExpense, balance, payload) =>                                  <= зміни в коді
+//     isExpense === false ? balance + payload : balance - payload;                       <= зміни в коді
+ 
+
+// module.exports = {                                                              <= зміни в коді
+//     getTransactions,
+//     getTransactionById,
+//     addTransaction,
+//     removeTransaction,
+// };
+/////////////////////////////////////////////////////////////////////////////////
 const getTransForTheMonth = async (req, res) => {
   const userId = req.user._id;
   const monthDate = monthCounter(req.body.date);
@@ -203,3 +263,4 @@ module.exports = {
   getTransForTheMonth,
   getTransactionsByYear,
 };
+

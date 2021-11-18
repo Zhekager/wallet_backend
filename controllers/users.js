@@ -70,7 +70,7 @@ const login = async (req, res) => {
   //     message: "Email or password is wrong",
   //   });
   // }
-  const id = user._id;
+  const id = user?._id;
   const payload = { id };
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "4h" });
   await Users.updateToken(id, token);
