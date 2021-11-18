@@ -1,5 +1,5 @@
 const express = require("express");
-const path = require("path");
+// const path = require("path");
 const logger = require("morgan");
 const cors = require("cors");
 const boolParser = require("express-query-boolean");
@@ -8,7 +8,7 @@ require("dotenv").config();
 const app = express();
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./swagger.json");
-const AVATAR_OF_USERS = process.env.AVATAR_OF_USERS;
+//const AVATAR_OF_USERS = process.env.AVATAR_OF_USERS;
 const { HttpCode } = require("./helpers/constants");
 const categoriesRouter = require("./routes/api/categories");
 const transactionsRouter = require("./routes/api/transactions");
@@ -16,13 +16,13 @@ const statisticsRouter = require("./routes/api/transactions");
 
 const usersRouter = require("./routes/api/users");
 
-// to check
-const authRouter = require("./routes/api/auth");
-require("dotenv").config({ path: path.join(__dirname, "../../.env") });
+//to check
+// const authRouter = require("./routes/api/auth");
+// require("dotenv").config({ path: path.join(__dirname, "../../.env") });
 
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 
-app.use(express.static(AVATAR_OF_USERS));
+//app.use(express.static(AVATAR_OF_USERS));
 app.use(helmet());
 app.use(logger(formatsLogger));
 app.use(cors());
@@ -34,11 +34,11 @@ app.use((req, _res, next) => {
   next();
 });
 
-// to check
-app.use("/auth", authRouter);
-app.use("/link", (_req, res) => {
-  res.sendFile(path.join(__dirname, ".public/link.html"));
-});
+//to check
+// app.use("/auth", authRouter);
+// app.use("/link", (_req, res) => {
+//   res.sendFile(path.join(__dirname, ".public/link.html"));
+// });
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
