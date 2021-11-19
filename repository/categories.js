@@ -1,9 +1,8 @@
 const Category = require('../model/categories');
-//const Transaction = require('../model/transaction');
 
-const listCategories = () => {
-    const result = Category.find();
-    return result;
+const listCategories = async (name) => {
+    const results = await Category.find(name);
+    return results;
 };
 
 module.exports = { listCategories };

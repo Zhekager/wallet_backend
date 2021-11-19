@@ -23,11 +23,11 @@ const transactionSchema = new Schema(
       //set: (data) => parseInt(data),
     },
     category: {
-      type: SchemaTypes.ObjectId,
-      ref: 'category',
+      type: String,
     },
     balance: {
       type: Number,
+      default: 0,
     },
     comment: {
       type: String,
@@ -59,18 +59,8 @@ transactionSchema.virtual('type').get(function () {
   return this.isExpense ? '-' : '+';
 });
 
-transactionSchema.virtual('date_str').get(function () {
-  const dd = this.date.getDate();
-  const mm = this.date.getMonth() + 1;
-  const yyyy = this.date.getFullYear();
-
-  return `${dd}.${mm}.${yyyy}`;
-});
-
 transactionSchema.plugin(mongoosePaginate);
 
 const Transaction = model('transaction', transactionSchema);
-// transactionSchema.virtual('info').get(function () {
-//     return `This is transaction ${this.owner}`
-// })
+
 module.exports = Transaction;

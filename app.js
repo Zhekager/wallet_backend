@@ -12,7 +12,6 @@ const swaggerDocument = require("./swagger.json");
 const { HttpCode } = require("./helpers/constants");
 const categoriesRouter = require("./routes/api/categories");
 const transactionsRouter = require("./routes/api/transactions");
-const statisticsRouter = require("./routes/api/transactions");
 
 const usersRouter = require("./routes/api/users");
 
@@ -44,7 +43,6 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use("/api/users", usersRouter);
 app.use("/api/transactions", transactionsRouter);
-app.use("/api/statistics", statisticsRouter);
 app.use("/api/categories", categoriesRouter);
 
 app.use((req, res) => {

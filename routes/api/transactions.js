@@ -4,18 +4,13 @@ const {
     getTransactions,
     getTransactionById,
     addTransaction,
-    //removeTransaction,
-    //updateTransaction,
-    //getStatisticTransaction,
+    getTransactionStatistics,
 } = require('../../controllers/transactions');
 const guard = require('../../helpers/guard');
 
 router.get('/', guard, getTransactions);
 router.get('/:transId', guard, getTransactionById);
 router.post('/', guard, addTransaction);
-//router.get('/statistics', guard, getStatisticTransaction);
-//router.delete('/:transId', guard, removeTransaction);
-//router.patch('/:transId', guard, updateTransaction);
-
+router.get('/statistics', guard, getTransactionStatistics);
 
 module.exports = router;

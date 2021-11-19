@@ -3,8 +3,6 @@ const { Schema, model, SchemaTypes } = require('mongoose');
 const categorySchema = new Schema(
     {
         name: { type: String },
-        color: { type: String },
-        isExpense: { type: Boolean, default: true },
     },
     {
         versionKey: false,
