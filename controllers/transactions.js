@@ -37,59 +37,59 @@ const getTransactionById = async (req, res) => {
   throw new CustomError(HttpCode.NOT_FOUND, "Not Found");
 };
 
-const addTransaction = async (req, res, next) => {
-  try {
-    const userId = req.user?._id;
-    const balanceUser = Number(req.user?.balance);
-    const { sum, isExpense } = req.body;
-    const sumNumber = parseInt(sum);
-    const transactionBalance = countBalance(isExpense, balanceUser, sumNumber);
-
-    await User.addBalance(userId, transactionBalance);
-
-    const transaction = await Transactions.addTransaction({
-      ...req.body,
-      owner: userId,
-      balance: transactionBalance,
-    });
-    res.status(HttpCode.CREATED).json({
-      status: "Success",
-      code: HttpCode.CREATED,
-      data: { transaction },
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
 // const addTransaction = async (req, res, next) => {
-//     try {
-//         const userId = req.user?._id;
-//         let transactionBalance;
+//   try {
+//     const userId = req.user?._id;
+//     const balanceUser = Number(req.user?.balance);
+//     const { sum, isExpense } = req.body;
+//     const sumNumber = parseInt(sum);
+//     const transactionBalance = countBalance(isExpense, balanceUser, sumNumber);
 
-//             req.body.isExpense === true
-//                 ? (transactionBalance = Number(req.user?.balance) + Number(req.body.sum))
-//                 : (transactionBalance = Number(req.user?.balance) - Number(req.body.sum));
+//     await User.addBalance(userId, transactionBalance);
 
-//         const newTransactionBalance = await User.addBalance(userId, transactionBalance);
-//         const transaction = await Transactions.addTransaction({
-//             ...req.body,
-//             owner: userId,
-//             balance: transactionBalance,
-//         });
-//         res.json({
-//             status: 'Success',
-//             code: HttpCode.OK,
-//             message: 'Successfull',
-//             data: {
-//                 transaction,
-//             },
-//         });
-//         next(newTransactionBalance);
-//     } catch (err) {
-//         next(err);
-//     }
+//     const transaction = await Transactions.addTransaction({
+//       ...req.body,
+//       owner: userId,
+//       balance: transactionBalance,
+//     });
+//     res.status(HttpCode.CREATED).json({
+//       status: "Success",
+//       code: HttpCode.CREATED,
+//       data: { transaction },
+//     });
+//   } catch (error) {
+//     next(error);
+//   }
 // };
+
+const addTransaction = async (req, res, next) => {
+    try {
+        const userId = req.user?._id;
+        let transactionBalance;
+
+            req.body.isExpense === true
+                ? (transactionBalance = Number(req.user?.balance) - Number(req.body.sum))
+                : (transactionBalance = Number(req.user?.balance) + Number(req.body.sum));
+
+        const newTransactionBalance = await User.addBalance(userId, transactionBalance);
+        const transaction = await Transactions.addTransaction({
+            ...req.body,
+            owner: userId,
+            balance: transactionBalance,
+        });
+        res.json({
+            status: 'Success',
+            code: HttpCode.OK,
+            message: 'Successfull',
+            data: {
+                transaction,
+            },
+        });
+        next(newTransactionBalance);
+    } catch (err) {
+        next(err);
+    }
+};
 
 const removeTransaction = async (req, res) => {
   const userId = req.user?._id;
