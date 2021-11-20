@@ -1,3 +1,4 @@
+const { string } = require('joi');
 const { Schema, SchemaTypes, model } = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate-v2');
 
@@ -8,7 +9,7 @@ const transactionSchema = new Schema(
       default: true
     },
     date: {
-      type: Date,
+      type: String,
 
     },
     month: {
@@ -27,7 +28,7 @@ const transactionSchema = new Schema(
     },
     balance: {
       type: Number,
-      default: 0,
+      //default: 0,
     },
     comment: {
       type: String,
