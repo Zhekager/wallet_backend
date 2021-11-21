@@ -63,7 +63,7 @@ const login = async (req, res, next) => {
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1h" });
   await Users.updateToken(id, token);
 
-  const { name, avatar } = user;
+  const { name, email, avatar, token } = user;
 
   return res.status(HttpCode.OK).json({
     status: "success",
