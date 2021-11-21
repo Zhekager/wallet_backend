@@ -4,13 +4,13 @@ const { HttpCode } = require("./constants");
 
 const guard = (req, res, next) => {
   passport.authenticate("jwt", { session: false }, (err, user) => {
-    // const token = req.get("Authorization")?.split(" ")[1];
+     const token = req.get("Authorization")?.split(" ")[1];
 
-    const token =
-      req.get("Authorization") === null ||
-      req.get("Authorization") === undefined
-        ? undefined
-        : req.get("Authorization").split(" ")[1];
+    // const token =
+    //   req.get("Authorization") === null ||
+    //   req.get("Authorization") === undefined
+    //     ? undefined
+    //     : req.get("Authorization").split(" ")[1];
 
     //const token = req.get("Authorization") && req.get("Authorization").split(" ")[1];
 

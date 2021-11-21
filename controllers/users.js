@@ -45,11 +45,11 @@ const signup = async (req, res) => {
 const login = async (req, res, next) => {
   const { email, password } = req.body;
   const user = await Users.findByEmail(email);
-  // const isValidPassword = await user?.isValidPassword(password);
-  const isValidPassword =
-    (await user) === null || (await user) === undefined
-      ? undefined
-      : await user.isValidPassword(password);
+   const isValidPassword = await user?.isValidPassword(password);
+  // const isValidPassword =
+  //   (await user) === null || (await user) === undefined
+  //     ? undefined
+  //     : await user.isValidPassword(password);
 
   // if (!user || !isValidPassword || !user?.verify) {
   // if (!user || !isValidPassword || (!user === true && user.verify)) {
@@ -60,7 +60,32 @@ const login = async (req, res, next) => {
   //   });
   // }
 
-  const id = user && user.id;
+
+  ==============================================================================
+  
+  //new
+  // const id = user && user.id;
+  // const newSession = await Session.create({
+  //   id,
+  // });
+
+  // const accessToken = jwt.sign({ id, newSession }, SECRET_KEY, {
+  //   expiresIn: "1h",
+  // });
+  // const refreshToken = jwt.sign({ id, newSession }, SECRET_KEY, {
+  //   expiresIn: "24h",
+  // });
+
+  //old
+   const id = user?._id;
+  //const id = user && user.id;
+
+  ////////////////////////////////////////////////////////////////////////////////
+  
+//   const id = user && user.id;                             <=конфлікт
+  
+  =======================================================================================
+
   const payload = { id };
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1h" });
 

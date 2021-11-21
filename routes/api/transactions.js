@@ -2,15 +2,13 @@ const express = require('express');
 const router = express.Router();
 const {
     getTransactions,
-    getTransactionById,
-    addTransaction,
-    getTransactionStatistics,
+    addTransactions,
+    getStatistics,
 } = require('../../controllers/transactions');
 const guard = require('../../helpers/guard');
 
 router.get('/', guard, getTransactions);
-router.get('/:transId', guard, getTransactionById);
-router.post('/', guard, addTransaction);
-router.get('/statistics', guard, getTransactionStatistics);
+router.post('/', guard, addTransactions);
+router.get('/statistics', guard, getStatistics);
 
 module.exports = router;
