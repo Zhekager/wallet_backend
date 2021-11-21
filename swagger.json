@@ -511,25 +511,37 @@
                             "schema": {
                                 "type": "object",
                                 "properties": {
-                                    "isExpense": {
-                                        "type": "boolean",
-                                        "default": true
+                                    "type": {
+                                        "type": "string",
+                                        "default": "income or spend",
+                                        "example": "spend or income"
                                     },
                                     "date": {
-                                        "type": "Date",
+                                        "type": "string",
                                         "example": "14.11.2021"
                                     },
-                                    "sum": {
+                                    "money": {
                                         "type": "Number",
                                         "example": "1000"
                                     },
                                     "comment": {
                                         "type": "string",
-                                        "example": "comment"
+                                        "example": "Gif"
                                     },
                                     "category": {
-                                        "type": "string",
-                                        "example": "345e5677e78934c90f67"
+                                        "type": "object",
+                                        "properties": {
+                                            "name": {
+                                                "type": "string",
+                                                "example": "Other"
+                                            },
+                                            "id": {
+                                                "type": "string",
+                                                "example": "345e5677e78934c90f67"
+                                            }
+                                        }
+
+        
                                     }
                                 }
                             }
@@ -537,83 +549,15 @@
                     }
                 },
                 "responses": {
-                    "200": {
-                        "description": "Successful operation",
-                        "content": {
-                            "application/json": {}
-                        }
-                    },
                     "201": {
                         "description": "Created",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "status": {
-                                            "type": "string",
-                                            "example": "Success"
-                                        },
-                                        "code": {
-                                            "type": "number",
-                                            "example": "201"
-                                        },
-                                        "data": {
-                                            "type": "object",
-                                            "properties": {
-                                                "isExpense": {
-                                                    "type": "boolean",
-                                                    "example": true
-                                                },
-                                                "_id": {
-                                                    "type": "string",
-                                                    "example": "hg63576538hvhdjjb763875687"
-                                                },
-                                                "date": {
-                                                    "type": "Date",
-                                                    "example": "14.11.2021"
-                                                },
-                                                "sum": {
-                                                    "type": "Number",
-                                                    "example": "1000"
-                                                },
-                                                "comment": {
-                                                    "type": "string",
-                                                    "example": "comment"
-                                                },
-                                                "balance": {
-                                                    "type": "Number",
-                                                    "example": "5000"
-                                                },
-                                                "category": {
-                                                    "type": "string",
-                                                    "example": "hgh467676386gf3742363"
-                                                },
-                                                "owner": {
-                                                    "type": "string",
-                                                    "example": "hgh467676386gf3742363"
-                                                },
-                                                "month": {
-                                                    "type": "Number",
-                                                    "example": "11"
-                                                },
-                                                "year": {
-                                                    "type": "Number",
-                                                    "example": "2021"
-                                                },
-                                                "createdAt": {
-                                                    "type": "string",
-                                                    "example": "2021-11-14T20:23"
-                                                },
-                                                "updatedAt": {
-                                                    "type": "string",
-                                                    "example": "2021-11-14T20:23"
-                                                }
-                                            }
-                                        }
-                                    }
+                                    "$ref": "#/components/schemas/Transaction"
                                 }
                             }
+                            
                         }
                     },
                     "400": {
@@ -701,115 +645,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "status": {
-                                            "type": "string",
-                                            "example": "Success"
-                                        },
-                                        "data": {
-                                            "type": "object",
-                                            "properties": {
-                                                "docs": [
-                                                    {
-                                                        "type": "array",
-                                                        "items": {
-                                                            "type": "object",
-                                                            "properties": {
-                                                                "isExpense": {
-                                                                    "type": "boolean",
-                                                                    "example": true
-                                                                },
-                                                                "_id": {
-                                                                    "type": "string",
-                                                                    "example": "hg63576538hvhdjjb763875687"
-                                                                },
-                                                                "date": {
-                                                                    "type": "string",
-                                                                    "example": "14.11.2021"
-                                                                },
-                                                                "sum": {
-                                                                    "type": "Number",
-                                                                    "example": "1000"
-                                                                },
-                                                                "comment": {
-                                                                    "type": "string",
-                                                                    "example": "comment"
-                                                                },
-                                                                "balance": {
-                                                                    "type": "Number",
-                                                                    "example": "5000"
-                                                                },
-                                                                "category": {
-                                                                    "type": "string",
-                                                                    "properties": {
-                                                                        "_id": {
-                                                                            "type": "string",
-                                                                            "example": "hgh467676386gf3742363"
-                                                                        },
-                                                                        "name": {
-                                                                            "type": "string",
-                                                                            "example": "Еда"
-                                                                        }
-                                                                    }
-                                                                },
-                                                                "owner": {
-                                                                    "type": "object",
-                                                                    "properties": {
-                                                                        "_id": {
-                                                                            "type": "string",
-                                                                            "example": "hgh467676386gf3742363"
-                                                                        },
-                                                                        "name": {
-                                                                            "type": "string",
-                                                                            "example": "Tetiana"
-                                                                        },
-                                                                        "email": {
-                                                                            "type": "string",
-                                                                            "format": "email",
-                                                                            "example": "tetiana@gmail.com"
-                                                                        }
-                                                                    }
-                                                                },
-                                                                "month": {
-                                                                    "type": "Number",
-                                                                    "example": "11"
-                                                                },
-                                                                "year": {
-                                                                    "type": "Number",
-                                                                    "example": "2021"
-                                                                },
-                                                                "createdAt": {
-                                                                    "type": "string",
-                                                                    "example": "2021-11-14T20:23"
-                                                                },
-                                                                "updatedAt": {
-                                                                    "type": "string",
-                                                                    "example": "2021-11-14T20:23"
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                ]
-                                            },
-                                            "totalDocs": {
-                                                "type": "Number",
-                                                "example": "5"
-                                            },
-                                            "limit": {
-                                                "type": "Number",
-                                                "example": "10"
-                                            },
-                                            "totalPages": {
-                                                "type": "Number",
-                                                "example": "1"
-                                            },
-                                            "page": {
-                                                "type": "Number",
-                                                "example": "1"
-                                            }
-                                        }
-                                    }
+                                    "$ref": "#/components/schemas/Transaction"
                                 }
                             }
                         }
@@ -879,114 +715,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "status": {
-                                            "type": "string",
-                                            "example": "Success"
-                                        },
-                                        "data": {
-                                            "type": "object",
-                                            "properties": {
-                                                "docs": [
-                                                    {
-                                                        "type": "array",
-                                                        "items": {
-                                                            "type": "object",
-                                                            "properties": {
-                                                                "type": {
-                                                                    "isExpense": true
-                                                                },
-                                                                "_id": {
-                                                                    "type": "string",
-                                                                    "example": "hg63576538hvhdjjb763875687"
-                                                                },
-                                                                "date": {
-                                                                    "type": "string",
-                                                                    "example": "14.11.2021"
-                                                                },
-                                                                "sum": {
-                                                                    "type": "Number",
-                                                                    "example": "1000"
-                                                                },
-                                                                "comment": {
-                                                                    "type": "string",
-                                                                    "example": "comment"
-                                                                },
-                                                                "balance": {
-                                                                    "type": "Number",
-                                                                    "example": "5000"
-                                                                },
-                                                                "category": {
-                                                                    "type": "string",
-                                                                    "properties": {
-                                                                        "_id": {
-                                                                            "type": "string",
-                                                                            "example": "hgh467676386gf3742363"
-                                                                        },
-                                                                        "name": {
-                                                                            "type": "string",
-                                                                            "example": "Еда"
-                                                                        }
-                                                                    }
-                                                                },
-                                                                "owner": {
-                                                                    "type": "object",
-                                                                    "properties": {
-                                                                        "_id": {
-                                                                            "type": "string",
-                                                                            "example": "hgh467676386gf3742363"
-                                                                        },
-                                                                        "name": {
-                                                                            "type": "string",
-                                                                            "example": "Tetiana"
-                                                                        },
-                                                                        "email": {
-                                                                            "type": "string",
-                                                                            "format": "email",
-                                                                            "example": "tetiana@gmail.com"
-                                                                        }
-                                                                    }
-                                                                },
-                                                                "month": {
-                                                                    "type": "Number",
-                                                                    "example": "11"
-                                                                },
-                                                                "year": {
-                                                                    "type": "Number",
-                                                                    "example": "2021"
-                                                                },
-                                                                "createdAt": {
-                                                                    "type": "string",
-                                                                    "example": "2021-11-14T20:23"
-                                                                },
-                                                                "updatedAt": {
-                                                                    "type": "string",
-                                                                    "example": "2021-11-14T20:23"
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                ]
-                                            },
-                                            "totalDocs": {
-                                                "type": "Number",
-                                                "example": "5"
-                                            },
-                                            "limit": {
-                                                "type": "Number",
-                                                "example": "10"
-                                            },
-                                            "totalPages": {
-                                                "type": "Number",
-                                                "example": "1"
-                                            },
-                                            "page": {
-                                                "type": "Number",
-                                                "example": "1"
-                                            }
-                                        }
-                                    }
+                                    "$ref": "#/components/schemas/Statistics"
                                 }
                             }
                         }
@@ -1055,31 +784,8 @@
                         "description": "Successful operation",
                         "content": {
                             "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "status": {
-                                            "type": "string",
-                                            "example": "Success"
-                                        },
-                                        "data": {
-                                            "type": "object",
-                                            "properties": {
-                                                "categoryId": {
-                                                    "type": "integer",
-                                                    "example": "1"
-                                                },
-                                                "name": {
-                                                    "type": "string",
-                                                    "example": "Еда"
-                                                },
-                                                "createdAt": {
-                                                    "type": "string",
-                                                    "example": "2021-11-14T20:23"
-                                                }
-                                            }
-                                        }
-                                    }
+                                "schema":{
+                                 "$ref": "#/components/schemas/Category"
                                 }
                             }
                         }
@@ -1186,55 +892,54 @@
             "Transaction": {
                 "type": "object",
                 "properties": {
-                    "type": {
-                        "type": "string",
-                        "example": "spend or income"
-                    },
-                    "_id": {
-                        "type": "string",
-                        "example": "hg63576538hvhdjjb763875687"
-                    },
                     "date": {
-                        "type": "string",
-                        "example": "14.11.2021"
+                        "type": "String",
+                        "examplet": "17.11.2021"
                     },
-                    "money": {
-                        "type": "Number",
-                        "example": "1000"
-                    },
-                    "comment": {
-                        "type": "string",
-                        "example": "comment"
-                    },
-                    "balance": {
-                        "type": "Number",
-                        "example": "5000"
+                    "type": {
+                      "type": "String",
+                      "enum": "['spend', 'income']",
+                      "default": "income"
                     },
                     "category": {
-                        "type": "string",
-                        "example": "hgh467676386gf3742363"
+                      "type": "object",
+                      "properties":{
+                          "name":{
+                              "type":"String",
+                              "example":"Eat"
+                          },
+                          "id":{
+                              "type":"string",
+                              "example":"6587q6gjhGKJHoiuo"
+                          }
+                      },
+                      "example": "Other"
                     },
-                    "owner": {
-                        "type": "string",
-                        "example": "hgh467676386gf3742363"
+                    "money": {
+                      "type": "Number",
+                      "example": "1000"
+                    },
+                    "balance": {
+                      "type": "Number",
+                      "example": "10000"
                     },
                     "month": {
-                        "type": "Number",
-                        "example": "11"
-                    },
+                      "type": "String",
+                      "example": "11"
+                      },
                     "year": {
-                        "type": "Number",
-                        "example": "2021"
+                      "type": "String",
+                      "example": "2021"
                     },
-                    "createdAt": {
-                        "type": "string",
-                        "example": "2021-11-14T20:23"
-                    },
-                    "updatedAt": {
-                        "type": "string",
-                        "example": "2021-11-14T20:23"
+                    "comment": {
+                      "type": "String",
+                      "example":"Gif"},
+                    "owner": {
+                      "type": "string",
+                      "exampl":"7678yjfahbjbh"
                     }
                 }
+                
             },
             "Category": {
                 "type": "object",
@@ -1242,6 +947,40 @@
                     "name": {
                         "type": "string",
                         "example": "Eat"
+                    },
+                    "id": {
+                        "type":"String",
+                        "example": "54362576gjhVNHVG87867"
+                    }
+                }
+            },
+            "Statistics": {
+                "type": "object",
+                "properties": {
+                    "data":{
+                        "type":"object",
+                        "properties": {
+                            "categoriesSummary":{
+                                "type":"object",
+                                "example":"Other"
+                            },
+                            "totalIncome":{
+                                "type":"Number",
+                                "example": 2000
+                            },
+                            "totalSpend": {
+                                "type": "Number",
+                                "example": 1000
+                            },
+                            "uniqueMonth": {
+                                "type":"number",
+                                "example":11
+                            },
+                            "uniqueYear": {
+                                "type": "number",
+                                "example": 2021
+                            }
+                        }
                     }
                 }
             }
