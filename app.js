@@ -14,6 +14,7 @@ const { HttpCode } = require("./helpers/constants");
 
 const usersRouter = require("./routes/api/users");
 const authRouter = require("./routes/api/auth");
+
 const categoriesRouter = require("./routes/api/categories");
 const transactionsRouter = require("./routes/api/transactions");
 const statisticsRouter = require("./routes/api/transactions");

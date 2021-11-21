@@ -6,7 +6,10 @@ const { CustomError } = require("../helpers/customError");
 const Transaction = require("../model/transaction");
 
 const getTransactions = async (req, res) => {
-  const userId = req.user?._id;
+  // const userId = req.user?._id;
+
+  const userId = req.user && req.user._id;
+
   const { data, transactions } = await Transactions.listTransactions(
     userId,
     req.query
@@ -22,7 +25,8 @@ const getTransactions = async (req, res) => {
 };
 
 const getTransactionById = async (req, res) => {
-  const userId = req.user?._id;
+  // const userId = req.user?._id;
+  const userId = req.user && req.user._id;
   const transaction = await Transactions.getTransactionById(
     userId,
     req.params.transId
@@ -67,12 +71,17 @@ const getTransactionById = async (req, res) => {
 
 const addTransaction = async (req, res, next) => {
   try {
-    const userId = req.user?._id;
+    // const userId = req.user?._id;
+    const userId = req.user && req.user._id;
     let transactionBalance;
 
     req.body.isExpense === true
-      ? (transactionBalance = Number(req.user?.balance) - Number(req.body.sum))
-      : (transactionBalance = Number(req.user?.balance) + Number(req.body.sum));
+      ? // ? (transactionBalance = Number(req.user?.balance) - Number(req.body.sum))
+        // : (transactionBalance = Number(req.user?.balance) + Number(req.body.sum));
+        (transactionBalance =
+          Number(req.user && req.user.balance) - Number(req.body.sum))
+      : (transactionBalance =
+          Number(req.user && req.user.balance) + Number(req.body.sum));
 
     const newTransactionBalance = await User.addBalance(
       userId,
@@ -98,7 +107,8 @@ const addTransaction = async (req, res, next) => {
 };
 
 const removeTransaction = async (req, res) => {
-  const userId = req.user?._id;
+  // const userId = req.user?._id;
+  const userId = req.user && req.user._id;
   const transaction = await Transactions.removeTransaction(
     userId,
     req.params.transId
@@ -120,7 +130,8 @@ const updateTransaction = async (req, res) => {
   const { _id: userId } = req.user;
   const { sum, type } = req.body;
   const sumNumber = parseInt(sum);
-  const balance = Number(req.user?.balance);
+  // const balance = Number(req.user?.balance);
+  const balance = Number(req.user && req.user.balance);
 
   const transactionBalance = countBalance(type, balance, sumNumber);
 

@@ -4,6 +4,7 @@ const fs = require("fs").promises;
 
 const UploadService = require("../services/cloud-upload");
 const { HttpCode } = require("../helpers/constants");
+const { CustomError } = require("../helpers/customError");
 
 const SECRET_KEY = process.env.JWT_SECRET_KEY;
 
@@ -11,46 +12,34 @@ const SECRET_KEY = process.env.JWT_SECRET_KEY;
 //const { CreateSenderSendGrid } = require("../services/email/sender");
 require("dotenv").config();
 
-const signup = async (req, res, next) => {
+const signup = async (req, res) => {
   const { name, email, password } = req.body;
   const user = await Users.findByEmail(email);
   if (user) {
-    return res.status(HttpCode.CONFLICT).json({
-      status: "error",
-      code: HttpCode.CONFLICT,
-      message: "Email is already in use",
-    });
+    throw new CustomError(HttpCode.CONFLICT, "Email is already in use");
   }
-  try {
-    const newUser = await Users.create({
-      name,
-      email,
-      password,
-    });
-    // const emailService = new EmailService(
-    //   process.env.NODE_ENV,
-    //   new CreateSenderSendGrid()
-    // );
-    // const statusEmail = await emailService.sendVerifyEmail(
-    //   newUser.email,
-    //   newUser.name,
-    //   newUser.verifyToken
-    // );
-    return res.status(HttpCode.CREATED).json({
-      status: "success",
-      code: HttpCode.CREATED,
-      message: "User created",
-      data: {
-        id: newUser.id,
-        name: newUser.name,
-        email: newUser.email,
-        avatar: newUser.avatarURL,
-        //successEmail: statusEmail,
-      },
-    });
-  } catch (error) {
-    next(error);
-  }
+  const newUser = await Users.create({ name, email, password });
+  // const emailService = new EmailService(
+  //   process.env.NODE_ENV,
+  //   new CreateSenderSendGrid()
+  // );
+  // const statusEmail = await emailService.sendVerifyEmail(
+  //   newUser.email,
+  //   newUser.name,
+  //   newUser.verifyToken
+  // );
+  return res.status(HttpCode.CREATED).json({
+    status: "success",
+    code: HttpCode.CREATED,
+    message: "User created",
+    data: {
+      id: newUser.id,
+      name: newUser.name,
+      email: newUser.email,
+      avatar: newUser.avatarURL,
+      //successEmail: statusEmail,
+    },
+  });
 };
 
 const login = async (req, res, next) => {
@@ -71,21 +60,6 @@ const login = async (req, res, next) => {
   //   });
   // }
 
-  //new
-  // const id = user && user.id;
-  // const newSession = await Session.create({
-  //   id,
-  // });
-
-  // const accessToken = jwt.sign({ id, newSession }, SECRET_KEY, {
-  //   expiresIn: "1h",
-  // });
-  // const refreshToken = jwt.sign({ id, newSession }, SECRET_KEY, {
-  //   expiresIn: "24h",
-  // });
-
-  //old
-  // const id = user?._id;
   const id = user && user.id;
   const payload = { id };
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1h" });
@@ -100,22 +74,6 @@ const login = async (req, res, next) => {
     },
   });
 };
-
-//new
-//   await User.updateToken(id, token);
-//   return res.json({
-//     status: "success",
-//     code: HttpCode.OK,
-//     accessToken,
-//     refreshToken,
-//     newSession,
-//     data: {
-//       email,
-//       username,
-//       id,
-//     },
-//   });
-// };
 
 const currentUser = async (req, res, next) => {
   try {
