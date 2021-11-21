@@ -1,5 +1,5 @@
 const { Schema, model } = require('mongoose');
-const mongoosePaginate = require('mongoose-paginate-v2');
+//const mongoosePaginate = require('mongoose-paginate-v2');
 
 const categorySchema = Schema(
     {
@@ -10,6 +10,7 @@ const categorySchema = Schema(
     },
     { versionKey: false, timestamps: true },
 );
+
 
 const Category = model('category', categorySchema);
 

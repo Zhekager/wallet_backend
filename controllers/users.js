@@ -59,9 +59,6 @@ const login = async (req, res, next) => {
   //     message: "Email or password is wrong",
   //   });
   // }
-
-
-  ==============================================================================
   
   //new
   // const id = user && user.id;
@@ -78,14 +75,8 @@ const login = async (req, res, next) => {
 
   //old
    const id = user?._id;
-  //const id = user && user.id;
-
-  ////////////////////////////////////////////////////////////////////////////////
-  
-//   const id = user && user.id;                             <=конфлікт
-  
-  =======================================================================================
-
+  //const id = user && user.id;                      
+ 
   const payload = { id };
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1h" });
 
