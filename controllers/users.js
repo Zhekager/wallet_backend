@@ -37,6 +37,7 @@ const signup = async (req, res) => {
       name: newUser.name,
       email: newUser.email,
       avatar: newUser.avatarURL,
+
       //successEmail: statusEmail,
     },
   });
@@ -63,7 +64,7 @@ const login = async (req, res, next) => {
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1h" });
   await Users.updateToken(id, token);
 
-  const { name, email, avatar, token } = user;
+  const { name, avatar } = user;
 
   return res.status(HttpCode.OK).json({
     status: "success",
