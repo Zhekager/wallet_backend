@@ -1,21 +1,24 @@
-const Transactions = require('../repository/transactions');
-const User = require('../repository/users');
-const Categories = require('../repository/categories');
-const { HttpCode } = require('../helpers/constants');
-const { CustomError } = require('../helpers/customError');
-const Transaction = require('../model/transaction');
+const Transactions = require("../repository/transactions");
+const User = require("../repository/users");
+const Categories = require("../repository/categories");
+const { HttpCode } = require("../helpers/constants");
+const { CustomError } = require("../helpers/customError");
+const Transaction = require("../model/transaction");
 
 const getTransactions = async (req, res) => {
   const userId = req.user?._id;
-  const { data, transactions } = await Transactions.listTransactions(userId, req.query);
+  const { data, transactions } = await Transactions.listTransactions(
+    userId,
+    req.query
+  );
   const years = [...new Set(transactions.map(({ year }) => year))].sort();
   const monthes = [...new Set(transactions.map(({ month }) => month))].sort();
   res.json({
-    status: 'Success',
+    status: "Success",
     code: HttpCode.OK,
-    message: 'Transactions found',
-    data: { monthes, years, transactions, data }
-  })
+    message: "Transactions found",
+    data: { monthes, years, transactions, data },
+  });
 };
 
 const getTransactionById = async (req, res) => {
@@ -63,32 +66,35 @@ const getTransactionById = async (req, res) => {
 // };
 
 const addTransaction = async (req, res, next) => {
-    try {
-        const userId = req.user?._id;
-        let transactionBalance;
+  try {
+    const userId = req.user?._id;
+    let transactionBalance;
 
-            req.body.isExpense === true
-                ? (transactionBalance = Number(req.user?.balance) - Number(req.body.sum))
-                : (transactionBalance = Number(req.user?.balance) + Number(req.body.sum));
+    req.body.isExpense === true
+      ? (transactionBalance = Number(req.user?.balance) - Number(req.body.sum))
+      : (transactionBalance = Number(req.user?.balance) + Number(req.body.sum));
 
-        const newTransactionBalance = await User.addBalance(userId, transactionBalance);
-        const transaction = await Transactions.addTransaction({
-            ...req.body,
-            owner: userId,
-            balance: transactionBalance,
-        });
-        res.json({
-            status: 'Success',
-            code: HttpCode.OK,
-            message: 'Successfull',
-            data: {
-                transaction,
-            },
-        });
-        next(newTransactionBalance);
-    } catch (err) {
-        next(err);
-    }
+    const newTransactionBalance = await User.addBalance(
+      userId,
+      transactionBalance
+    );
+    const transaction = await Transactions.addTransaction({
+      ...req.body,
+      owner: userId,
+      balance: transactionBalance,
+    });
+    res.json({
+      status: "Success",
+      code: HttpCode.OK,
+      message: "Successfull",
+      data: {
+        transaction,
+      },
+    });
+    next(newTransactionBalance);
+  } catch (err) {
+    next(err);
+  }
 };
 
 const removeTransaction = async (req, res) => {
@@ -114,7 +120,7 @@ const updateTransaction = async (req, res) => {
   const { _id: userId } = req.user;
   const { sum, type } = req.body;
   const sumNumber = parseInt(sum);
-  const balance = Number(req.user?.balance)
+  const balance = Number(req.user?.balance);
 
   const transactionBalance = countBalance(type, balance, sumNumber);
 
@@ -123,23 +129,23 @@ const updateTransaction = async (req, res) => {
     req.params.transId,
     req.body,
     userId,
-    transactionBalance,
+    transactionBalance
   );
   res.json({
-    status: 'Success',
+    status: "Success",
     code: HttpCode.OK,
-    message: 'Transaction updated successfully',
+    message: "Transaction updated successfully",
     data: {
       transaction,
     },
   });
-  throw new CustomError(HttpCode.NOT_FOUND, 'Not Found');
+  throw new CustomError(HttpCode.NOT_FOUND, "Not Found");
 };
 
 const getTransactionStatistics = async (req, res) => {
   const userId = req.user._id;
   const { year, month } = req.body;
-  const allCategories = await Categories.listCategories(name, userId)
+  const allCategories = await Categories.listCategories(name, userId);
   const categoriesBalances = await Transactions.listTransactionStats(
     userId,
     year,
@@ -186,11 +192,10 @@ const getTransactionStatistics = async (req, res) => {
 //   }
 // }
 
-
 // Balance
 
 const countBalance = (isExpense, balance, payload) => {
-  isExpense === false ? balance + payload : balance - payload
+  isExpense === false ? balance + payload : balance - payload;
 };
 
 module.exports = {

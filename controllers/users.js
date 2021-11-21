@@ -1,15 +1,15 @@
 const jwt = require("jsonwebtoken");
 const Users = require("../repository/users");
-
 const fs = require("fs").promises;
+
 const UploadService = require("../services/cloud-upload");
 const { HttpCode } = require("../helpers/constants");
 
+const SECRET_KEY = process.env.JWT_SECRET_KEY;
+
 //const EmailService = require("../services/email/service");
 //const { CreateSenderSendGrid } = require("../services/email/sender");
-
 require("dotenv").config();
-const SECRET_KEY = process.env.JWT_SECRET_KEY;
 
 const signup = async (req, res, next) => {
   const { name, email, password } = req.body;
@@ -22,7 +22,7 @@ const signup = async (req, res, next) => {
     });
   }
   try {
-    const newUser = await Users.createUser({
+    const newUser = await Users.create({
       name,
       email,
       password,
@@ -53,14 +53,14 @@ const signup = async (req, res, next) => {
   }
 };
 
-const login = async (req, res) => {
+const login = async (req, res, next) => {
   const { email, password } = req.body;
   const user = await Users.findByEmail(email);
   // const isValidPassword = await user?.isValidPassword(password);
   const isValidPassword =
-    ((await user) === null || (await user) === undefined
+    (await user) === null || (await user) === undefined
       ? undefined
-      : await user.isValidPassword(password))
+      : await user.isValidPassword(password);
 
   // if (!user || !isValidPassword || !user?.verify) {
   // if (!user || !isValidPassword || (!user === true && user.verify)) {
@@ -70,9 +70,26 @@ const login = async (req, res) => {
   //     message: "Email or password is wrong",
   //   });
   // }
-  const id = user?._id;
+
+  //new
+  // const id = user && user.id;
+  // const newSession = await Session.create({
+  //   id,
+  // });
+
+  // const accessToken = jwt.sign({ id, newSession }, SECRET_KEY, {
+  //   expiresIn: "1h",
+  // });
+  // const refreshToken = jwt.sign({ id, newSession }, SECRET_KEY, {
+  //   expiresIn: "24h",
+  // });
+
+  //old
+  // const id = user?._id;
+  const id = user && user.id;
   const payload = { id };
-  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "4h" });
+  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1h" });
+
   await Users.updateToken(id, token);
   return res.status(HttpCode.OK).json({
     status: "success",
@@ -84,11 +101,21 @@ const login = async (req, res) => {
   });
 };
 
-const logout = async (req, res) => {
-  const id = req.user._id;
-  await Users.updateToken(id, null);
-  return res.status(HttpCode.NO_CONTENT).json({});
-};
+//new
+//   await User.updateToken(id, token);
+//   return res.json({
+//     status: "success",
+//     code: HttpCode.OK,
+//     accessToken,
+//     refreshToken,
+//     newSession,
+//     data: {
+//       email,
+//       username,
+//       id,
+//     },
+//   });
+// };
 
 const currentUser = async (req, res, next) => {
   try {
@@ -201,6 +228,12 @@ const repeatEmailForVerifyUser = async (req, res, next) => {
       message: "Verification email sent",
     },
   });
+};
+
+const logout = async (req, res) => {
+  const id = req.user._id;
+  await Users.updateToken(id, null);
+  return res.status(HttpCode.NO_CONTENT).json({});
 };
 
 module.exports = {

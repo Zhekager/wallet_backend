@@ -1,4 +1,5 @@
 const { Schema, model } = require("mongoose");
+
 const gravatar = require("gravatar");
 const { v4: uuidv4 } = require("uuid");
 const { AvatarSize } = require("../helpers/constants");
@@ -7,9 +8,9 @@ const SALT_FACTOR = 10;
 
 const userSchema = new Schema(
   {
-    password: {
+    name: {
       type: String,
-      required: [true, "Password is required"],
+      default: "Guest",
     },
     email: {
       type: String,
@@ -20,10 +21,11 @@ const userSchema = new Schema(
         return re.test(String(value).toLowerCase());
       },
     },
-    name: {
+    password: {
       type: String,
-      default: "Guest",
+      required: [true, "Password is required"],
     },
+
     token: {
       type: String,
       default: null,
@@ -32,6 +34,9 @@ const userSchema = new Schema(
       type: Number,
       default: 0,
     },
+
+    _id: Object, //to remove 
+
     avatarURL: {
       type: String,
       default: function () {
