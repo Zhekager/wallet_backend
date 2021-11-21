@@ -45,48 +45,36 @@ const signup = async (req, res) => {
 const login = async (req, res, next) => {
   const { email, password } = req.body;
   const user = await Users.findByEmail(email);
-   const isValidPassword = await user?.isValidPassword(password);
+  const isValidPassword = await user?.isValidPassword(password);
+
   // const isValidPassword =
   //   (await user) === null || (await user) === undefined
   //     ? undefined
   //     : await user.isValidPassword(password);
 
-  // if (!user || !isValidPassword || !user?.verify) {
-  // if (!user || !isValidPassword || (!user === true && user.verify)) {
-  //   return res.status(HttpCode.UNAUTHORIZED).json({
-  //     status: "error",
-  //     code: HttpCode.UNAUTHORIZED,
-  //     message: "Email or password is wrong",
-  //   });
-  // }
-  
-  //new
-  // const id = user && user.id;
-  // const newSession = await Session.create({
-  //   id,
-  // });
+  if (!user || !isValidPassword || !user?.verify) {
+    //   // if (!user || !isValidPassword || (!user === true && user.verify)) {
+    throw new CustomError(HttpCode.UNAUTHORIZED, "Email or password is wrong");
+  }
 
-  // const accessToken = jwt.sign({ id, newSession }, SECRET_KEY, {
-  //   expiresIn: "1h",
-  // });
-  // const refreshToken = jwt.sign({ id, newSession }, SECRET_KEY, {
-  //   expiresIn: "24h",
-  // });
+  const id = user?._id;
+  //const id = user && user.id;
 
-  //old
-   const id = user?._id;
-  //const id = user && user.id;                      
- 
   const payload = { id };
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1h" });
-
   await Users.updateToken(id, token);
+
+  const { name, avatar } = user;
+
   return res.status(HttpCode.OK).json({
     status: "success",
     code: HttpCode.OK,
     message: "You have logged in",
     data: {
+      name,
+      email,
       token,
+      avatar,
     },
   });
 };
