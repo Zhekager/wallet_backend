@@ -45,21 +45,20 @@ const signup = async (req, res) => {
 const login = async (req, res, next) => {
   const { email, password } = req.body;
   const user = await Users.findByEmail(email);
-  const isValidPassword = await user?.isValidPassword(password);
+  // const isValidPassword = await user?.isValidPassword(password);
 
-  // const isValidPassword =
-  //   (await user) === null || (await user) === undefined
-  //     ? undefined
-  //     : await user.isValidPassword(password);
+  const isValidPassword =
+    (await user) === null || (await user) === undefined
+      ? undefined
+      : await user.isValidPassword(password);
 
-  if (!user || !isValidPassword || !user?.verify) {
-    //   // if (!user || !isValidPassword || (!user === true && user.verify)) {
+  // if (!user || !isValidPassword || !user?.verify) {
+  if (!user || !isValidPassword || (!user && user.verify)) {
     throw new CustomError(HttpCode.UNAUTHORIZED, "Email or password is wrong");
   }
 
-  const id = user?._id;
-  //const id = user && user.id;
-
+  // const id = user?._id;
+  const id = user && user.id;
   const payload = { id };
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1h" });
   await Users.updateToken(id, token);
