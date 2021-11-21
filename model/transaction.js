@@ -1,64 +1,50 @@
-const { string } = require('joi');
 const { Schema, SchemaTypes, model } = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate-v2');
 
 const transactionSchema = new Schema(
   {
-    isExpense: {
-      type: Boolean,
-      default: true
-    },
     date: {
       type: String,
-
+      default: new Date().toLocaleDateString(),
     },
-    month: {
-      type: Number,
-    },
-    year: {
-      type: Number,
-    },
-    sum: {
-      type: Number,
-      required: true,
-      //set: (data) => parseInt(data),
+    type: {
+      type: String,
+      enum: ['spend', 'income'],
+      default: 'income',
     },
     category: {
-      type: String,
+      type: SchemaTypes.ObjectId,
+      ref: 'category',
+      required: true,
+    },
+    money: {
+      type: Number,
+      min: 0,
+      required: [true],
     },
     balance: {
-      type: Number,
-      //default: 0,
+      type: Number
+    },
+    month: {
+      type: String,
+      default: new Date().toLocaleDateString().slice(3, 5),
+    },
+    year: {
+      type: String,
+      default: new Date().toLocaleDateString().slice(6),
     },
     comment: {
       type: String,
-      maxlength: 50,
       default: '',
     },
     owner: {
       type: SchemaTypes.ObjectId,
       ref: 'user',
+      required: true,
     },
   },
-  {
-    versionKey: false,
-    timestamps: true,
-    toJSON: {
-      virtuals: true,
-      transform: function (doc, ret) {
-        delete ret._id;
-        return ret;
-      },
-    },
-    toObject: {
-      virtuals: true,
-    },
-  },
+  { versionKey: false, timestamps: true },
 );
-
-transactionSchema.virtual('type').get(function () {
-  return this.isExpense ? '-' : '+';
-});
 
 transactionSchema.plugin(mongoosePaginate);
 

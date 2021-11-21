@@ -1,20 +1,14 @@
-const { Schema, model, SchemaTypes } = require('mongoose');
+const { Schema, model } = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate-v2');
 
-const categorySchema = new Schema(
+const categorySchema = Schema(
     {
-        name: { type: String },
-    },
-    {
-        versionKey: false,
-        timestamps: true,
-        toJSON: {
-            virtuals: true,
-            transform: function (doc, ret) {
-                delete ret._id;
-                return ret;
-            },
+        name: {
+            type: String,
+            required: [true, 'category name is required'],
         },
     },
+    { versionKey: false, timestamps: true },
 );
 
 const Category = model('category', categorySchema);

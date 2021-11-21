@@ -1,10 +1,13 @@
 const Category = require('../model/categories');
 
-const listCategories = async (name) => {
-    const results = await Category.find(name);
+const getCategories = async () => {
+    const results = await Category.find({});
     return results;
 };
 
-module.exports = { listCategories };
+const addCategories = async (body) => {
+    const results = await Category.create(body);
+    return results;
+};
 
-
+module.exports = { getCategories, addCategories };

@@ -33,8 +33,11 @@ const updateUser = async (id, body) => {
   return await User.findOneAndUpdate({ _id: id }, { ...body }, { new: true });
 };
 
-const addBalance = async (id, balance) => {
-  return await User.updateOne({ _id: id }, { balance });
+const updateUserBalance = async (userId, body) => {
+  const result = await User.findByIdAndUpdate(
+    userId, body, { new: true }
+  );
+  return result;
 };
 
 module.exports = {
@@ -46,5 +49,5 @@ module.exports = {
   findUserByVerifyToken,
   updateTokenVerify,
   updateUser,
-  addBalance,
+  updateUserBalance,
 };
