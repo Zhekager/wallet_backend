@@ -41,6 +41,7 @@
     "express-rate-limit": "^5.5.1",
     "gravatar": "^1.8.2",
     "helmet": "^4.6.0",
+    "heroku": "^7.59.2",
     "joi": "^17.4.2",
     "joi-objectid": "^4.0.2",
     "jsonwebtoken": "^8.5.1",

@@ -23,10 +23,10 @@ const loginLimit = require("../../helpers/rate-limit-login");
 const upload = require("../../helpers/uploads");
 const wrapError = require("../../helpers/errorHandler");
 
-router.post("/signup", validateCreateUser, signup);
-router.post("/login", validateLogin, loginLimit, login);
-router.post("/logout", guard, logout);
-router.get("/current", guard, currentUser);
+router.post("/signup", validateCreateUser, wrapError(signup));
+router.post("/login", validateLogin, loginLimit, wrapError(login));
+router.post("/logout", guard, wrapError(logout));
+router.get("/current", guard, wrapError(currentUser));
 
 router.patch("/avatars", guard, upload.single("avatar"), uploadAvatar);
 

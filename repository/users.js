@@ -1,5 +1,10 @@
 const User = require("../model/user");
 
+const create = async (options) => {
+  const user = new User(options);
+  return await user.save();
+};
+
 const findById = async (id) => {
   return await User.findById(id);
 };
@@ -10,11 +15,6 @@ const findByEmail = async (email) => {
 
 const findUserByVerifyToken = async (verifyToken) => {
   return await User.findOne({ verifyToken });
-};
-
-const createUser = async (options) => {
-  const user = new User(options);
-  return await user.save();
 };
 
 const updateToken = async (id, token) => {
@@ -30,23 +30,17 @@ const updateAvatar = async (id, avatar, idUserCloud = null) => {
 };
 
 const updateUser = async (id, body) => {
-  const result = await User.findOneAndUpdate(
-    { _id: id },
-    { ...body },
-    { new: true }
-  );
-  return result;
+  return await User.findOneAndUpdate({ _id: id }, { ...body }, { new: true });
 };
 
 const addBalance = async (id, balance) => {
   return await User.updateOne({ _id: id }, { balance });
 };
 
-
 module.exports = {
   findByEmail,
   findById,
-  createUser,
+  create,
   updateToken,
   updateAvatar,
   findUserByVerifyToken,

@@ -1,5 +1,6 @@
+const path = require("path"); //to remove later
+
 const express = require("express");
-// const path = require("path");
 const logger = require("morgan");
 const cors = require("cors");
 const boolParser = require("express-query-boolean");
@@ -10,14 +11,12 @@ const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./swagger.json");
 //const AVATAR_OF_USERS = process.env.AVATAR_OF_USERS;
 const { HttpCode } = require("./helpers/constants");
-const categoriesRouter = require("./routes/api/categories");
-const transactionsRouter = require("./routes/api/transactions");
 
 const usersRouter = require("./routes/api/users");
-
-//to check
-// const authRouter = require("./routes/api/auth");
-// require("dotenv").config({ path: path.join(__dirname, "../../.env") });
+const authRouter = require("./routes/api/auth");
+const categoriesRouter = require("./routes/api/categories");
+const transactionsRouter = require("./routes/api/transactions");
+const statisticsRouter = require("./routes/api/transactions");
 
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 
@@ -33,15 +32,15 @@ app.use((req, _res, next) => {
   next();
 });
 
-//to check
-// app.use("/auth", authRouter);
-// app.use("/link", (_req, res) => {
-//   res.sendFile(path.join(__dirname, ".public/link.html"));
-// });
-
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use("/api/users", usersRouter);
+app.use("/auth", authRouter);
+//to remove later
+app.use("/link", (_req, res) => {
+  res.sendFile(path.join(__dirname, "./public/link.html"));
+});
+
 app.use("/api/transactions", transactionsRouter);
 app.use("/api/categories", categoriesRouter);
 

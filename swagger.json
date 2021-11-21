@@ -327,7 +327,7 @@
                 }
             }
         },
-        "/api/users/google": {
+        "/auth/google": {
             "get": {
                 "tags": [
                     "Users"
