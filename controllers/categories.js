@@ -1,7 +1,10 @@
-const Categories = require('../repository/categories');
-const { HttpCode } = require('../helpers/constants');
+const Categories = require("../repository/categories");
+const { HttpCode } = require("../helpers/constants");
 
 const getCategories = async (req, res) => {
+  
+=================================================================================
+  
     const userId = req.user?._id;
     const result = await Categories.getCategories(userId);
     return res.json({
@@ -10,6 +13,21 @@ const getCategories = async (req, res) => {
         message: 'Categories found',
         result
     });
+
+  ///////////////////////////////////////////////////////////////////////////
+  
+  // const userId = req.user?._id;                          <=конфлікт
+//   const userId = req.user && req.user._id;
+
+//   const data = await Categories.listCategories(userId, req.query);
+//   res.json({
+//     status: "Success",
+//     code: HttpCode.OK,
+//     message: "Categories found",
+//     data: data,
+//   });
+ ==================================================================================
+
 };
 
 const addCategories = async ({ body }, res) => {

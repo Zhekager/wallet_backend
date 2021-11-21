@@ -10,6 +10,6 @@ const router = Router();
 
 router.get("/google", wrapError(googleAuth));
 router.get("/google-redirect", wrapError(googleRedirect));
-// router.get("/google-user", wrapError(findGoogleUser));
+router.get("/google-user", wrapError(findGoogleUser));
 
 module.exports = router;

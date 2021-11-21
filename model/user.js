@@ -35,7 +35,11 @@ const userSchema = new Schema(
       default: 0,
     },
 
+
       //_id: Object, //to remove 
+
+    // _id: Object, 
+
 
     avatarURL: {
       type: String,
