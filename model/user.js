@@ -1,4 +1,4 @@
-const { Schema, model } = require("mongoose");
+const { Schema, SchemaTypes, model } = require("mongoose");
 
 const gravatar = require("gravatar");
 const { v4: uuidv4 } = require("uuid");
