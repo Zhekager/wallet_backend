@@ -25,7 +25,6 @@ const userSchema = new Schema(
       type: String,
       required: [true, "Password is required"],
     },
-
     token: {
       type: String,
       default: null,
@@ -34,13 +33,6 @@ const userSchema = new Schema(
       type: Number,
       default: 0,
     },
-
-
-      //_id: Object, //to remove 
-
-    // _id: Object, 
-
-
     avatarURL: {
       type: String,
       default: function () {

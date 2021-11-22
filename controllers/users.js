@@ -29,12 +29,6 @@ const signup = async (req, res) => {
   //   newUser.verifyToken
   // );
 
-  //const id = user && user.id;
-  const id = user?._id;
-  const payload = { id };
-  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1h" });
-  await Users.updateToken(id, token);
-
   return res.status(HttpCode.CREATED).json({
     status: "success",
     code: HttpCode.CREATED,
@@ -44,7 +38,6 @@ const signup = async (req, res) => {
       name: newUser.name,
       email: newUser.email,
       avatar: newUser.avatarURL,
-      token: newUser.token,
 
       //successEmail: statusEmail,
     },
@@ -54,20 +47,20 @@ const signup = async (req, res) => {
 const login = async (req, res, next) => {
   const { email, password } = req.body;
   const user = await Users.findByEmail(email);
-   const isValidPassword = await user?.isValidPassword(password);
+  //  const isValidPassword = await user?.isValidPassword(password);
 
-  // const isValidPassword =
-  //   (await user) === null || (await user) === undefined
-  //     ? undefined
-  //     : await user.isValidPassword(password);
+  const isValidPassword =
+    (await user) === null || (await user) === undefined
+      ? undefined
+      : await user.isValidPassword(password);
 
   // if (!user || !isValidPassword || !user?.verify) {
   // if (!user || !isValidPassword || (!user && user.verify)) {
   //   throw new CustomError(HttpCode.UNAUTHORIZED, "Email or password is wrong");
   //}
 
-  const id = user?._id;
- //const id = user && user.id;
+  // const id = user?._id;
+  const id = user && user._id;
   const payload = { id };
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1h" });
   await Users.updateToken(id, token);
@@ -90,7 +83,7 @@ const login = async (req, res, next) => {
 const currentUser = async (req, res, next) => {
   try {
     const id = req.user._id;
-    const { name, email } = req.user;
+    const { name, email, avatar, token } = req.user;
     return res.status(HttpCode.OK).json({
       status: "success",
       code: HttpCode.OK,
@@ -98,6 +91,8 @@ const currentUser = async (req, res, next) => {
         id,
         name,
         email,
+        avatar,
+        token,
       },
     });
   } catch (error) {

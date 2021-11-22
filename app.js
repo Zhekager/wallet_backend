@@ -1,4 +1,4 @@
-const path = require("path"); //to remove later
+const path = require("path");
 
 const express = require("express");
 const logger = require("morgan");
@@ -17,7 +17,6 @@ const authRouter = require("./routes/api/auth");
 
 const categoriesRouter = require("./routes/api/categories");
 const transactionsRouter = require("./routes/api/transactions");
-const statisticsRouter = require("./routes/api/transactions");
 
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 
@@ -37,7 +36,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use("/api/users", usersRouter);
 app.use("/auth", authRouter);
-//to remove later
+
 app.use("/link", (_req, res) => {
   res.sendFile(path.join(__dirname, "./public/link.html"));
 });
