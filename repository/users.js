@@ -34,9 +34,7 @@ const updateUser = async (id, body) => {
 };
 
 const updateUserBalance = async (userId, body) => {
-  const result = await User.findByIdAndUpdate(
-    userId, body, { new: true }
-  );
+  const result = await User.findByIdAndUpdate(userId, body, { new: true });
   return result;
 };
 
