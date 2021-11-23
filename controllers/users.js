@@ -5,6 +5,7 @@ const fs = require("fs").promises;
 const UploadService = require("../services/cloud-upload");
 const { HttpCode } = require("../helpers/constants");
 const { CustomError } = require("../helpers/customError");
+const Transaction = require('../model/transaction');
 
 const SECRET_KEY = process.env.JWT_SECRET_KEY;
 
@@ -65,7 +66,12 @@ const login = async (req, res, next) => {
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1h" });
   await Users.updateToken(id, token);
 
-  const { name, avatar, balance} = user;
+  const { name, avatar, balance, _id } = user;
+  const transactions = await Transaction.find(
+    {
+      owner: _id
+    }
+  )
 
   return res.status(HttpCode.OK).json({
     status: "success",
@@ -77,6 +83,7 @@ const login = async (req, res, next) => {
       token,
       avatar,
       balance,
+      transactions: transactions,
     },
   });
 };
