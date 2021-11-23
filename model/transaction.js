@@ -9,8 +9,8 @@ const transactionSchema = new Schema(
     },
     type: {
       type: String,
-      enum: ['spend', 'income'],
-      default: 'income',
+      enum: ['-', '+'],
+      default: '+',
     },
     category: {
       type: SchemaTypes.ObjectId,
