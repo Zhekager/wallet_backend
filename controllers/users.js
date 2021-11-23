@@ -71,7 +71,7 @@ const login = async (req, res, next) => {
     {
       owner: _id
     }
-  )
+  ).populate({ path: 'category', select: 'name' })
 
   return res.status(HttpCode.OK).json({
     status: "success",
