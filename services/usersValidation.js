@@ -7,14 +7,14 @@ const schemaAddUser = Joi.object({
     .max(30)
     .pattern(/[A-Z]\w+/)
     .optional(),
-  // email: Joi.string().email().required(),
-  // password: Joi.string().min(8).required(),
+  email: Joi.string().email().required(),
+  password: Joi.string().min(8).required(),
  });
 
-// const schemaLogin = Joi.object({
-//   email: Joi.string().email().required(),
-//   password: Joi.string().min(8).required(),
-// });
+const schemaLogin = Joi.object({
+  email: Joi.string().email().required(),
+  password: Joi.string().min(8).required(),
+});
 
 
 const schemaResendingEmail = Joi.object({
@@ -36,17 +36,17 @@ const validate = async (schema, obj, next) => {
   }
 };
 
-// module.exports.validateCreateUser = (req, _res, next) => {
-//   return validate(schemaAddUser, req.body, next);
-// };
+module.exports.validateCreateUser = (req, _res, next) => {
+  return validate(schemaAddUser, req.body, next);
+};
 
 module.exports.validateSubscriptionUpdate = (req, _res, next) => {
   return validate(schemaUpdateSubscriptionUser, req.body, next);
 };
 
-// module.exports.validateLogin = (req, _res, next) => {
-//   return validate(schemaLogin, req.body, next);
-// };
+module.exports.validateLogin = (req, _res, next) => {
+  return validate(schemaLogin, req.body, next);
+};
 
 module.exports.validateResendingEmail = (req, _res, next) => {
   return validate(schemaResendingEmail, req.body, next);

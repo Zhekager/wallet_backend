@@ -8,8 +8,8 @@ const {
 
 const router = Router();
 
-router.get("/google", wrapError(googleAuth));
-router.get("/google-redirect", wrapError(googleRedirect));
-router.get("/google-user", wrapError(findGoogleUser));
+router.get("/google", googleAuth);
+router.get("/google-redirect", googleRedirect);
+router.get("/google-user", findGoogleUser);
 
 module.exports = router;
