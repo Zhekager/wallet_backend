@@ -14,7 +14,7 @@ const {
 
 const {
   validateCreateUser,
-  // validateLogin,
+  validateLogin,
   validateResendingEmail,
 } = require("../../services/usersValidation");
 
@@ -23,10 +23,8 @@ const loginLimit = require("../../helpers/rate-limit-login");
 const upload = require("../../helpers/uploads");
 const wrapError = require("../../helpers/errorHandler");
 
-// router.post("/signup", validateCreateUser, wrapError(signup));
-router.post("/signup", wrapError(signup));
-// router.post("/login", validateLogin, loginLimit, wrapError(login));
-router.post("/login", loginLimit, wrapError(login));
+router.post("/signup", validateCreateUser, wrapError(signup));
+router.post("/login", validateLogin, loginLimit, wrapError(login));
 router.post("/logout", guard, wrapError(logout));
 router.get("/current", guard, wrapError(currentUser));
 
