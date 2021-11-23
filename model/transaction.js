@@ -27,7 +27,7 @@ const transactionSchema = new Schema(
     },
     month: {
       type: String,
-      default: new Date().toLocaleDateString().slice(4, 6),
+      default: new Date().toLocaleDateString().slice(3, 5),
     },
     year: {
       type: String,

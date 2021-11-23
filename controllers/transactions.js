@@ -53,7 +53,7 @@ const getStatistics = async ({ user: { id }, query }, res) => {
   const getUniqueMonth = array =>
     array.reduce((acc, { month }) => {
       if (!acc.includes(month)) {
-        acc.push(month.toLocaleDateString().slice(4, 6),);
+        acc.push(month);
       }
       return acc;
     }, []);
