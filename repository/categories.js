@@ -1,7 +1,7 @@
 const Category = require('../model/categories');
 
 const getCategories = async () => {
-    const results = await Category.find({});
+    const results = await Category.find({ });
     return results;
 };
 

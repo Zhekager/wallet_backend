@@ -4,11 +4,11 @@ const { HttpCode } = require("../helpers/constants");
 
 
 const addTransactions = async ({ body, user: { id, balance } }, res) => {
-  if (body.type === 'income') {
+  if (body.type === '+') {
     const updatedBalance = (balance += body.money);
     await User.updateUserBalance(id, { balance: updatedBalance });
   }
-  if (body.type === 'spend') {
+  if (body.type === '-') {
     const updatedBalance = (balance -= body.money);
     await User.updateUserBalance(id, { balance: updatedBalance });
   }
@@ -53,7 +53,7 @@ const getStatistics = async ({ user: { id }, query }, res) => {
   const getUniqueMonth = array =>
     array.reduce((acc, { month }) => {
       if (!acc.includes(month)) {
-        acc.push(month);
+        acc.push(month.toLocaleDateString().slice(4, 6),);
       }
       return acc;
     }, []);

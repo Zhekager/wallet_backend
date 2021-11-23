@@ -18,25 +18,25 @@ const getTransactionsByDate = async (userId, month, year) => {
 };
 
 const getAllIncome = async (userId) => {
-    const result = await Transaction.find({ owner: userId, type: 'income' })
+    const result = await Transaction.find({ owner: userId, type: '+' })
         .populate('category')
     return result;
 };
 
 const getAllIncomeByDate = async (userId, month, year) => {
-    const result = await Transaction.find({ owner: userId, type: 'income', month, year })
+    const result = await Transaction.find({ owner: userId, type: '+', month, year })
         .populate('category')
     return result;
 };
 
 const getAllSpend = async (userId) => {
-    const result = await Transaction.find({ owner: userId, type: 'spend' })
+    const result = await Transaction.find({ owner: userId, type: '-' })
         .populate('category')
     return result;
 };
 
 const getAllSpendByDate = async (userId, month, year) => {
-    const result = await Transaction.find({ owner: userId, type: 'spend', month, year })
+    const result = await Transaction.find({ owner: userId, type: '-', month, year })
         .populate('category')
     return result;
 };

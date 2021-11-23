@@ -83,7 +83,7 @@ const login = async (req, res, next) => {
       token,
       avatar,
       balance,
-      transactions: transactions,
+      transactions:transactions,
     },
   });
 };
