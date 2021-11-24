@@ -207,7 +207,7 @@ const findUserByEmail = async (req, res, next) => {
 const currentUser = async (req, res, next) => {
   try {
     const id = req.user._id;
-    const { name, email, avatar, token, balance, _d } = req.user;
+    const { name, email, avatar, token, balance, _id } = req.user;
     const transactions = await Transaction.find({
       owner: _id,
     }).populate({ path: "category", select: "name" });
