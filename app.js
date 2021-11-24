@@ -18,7 +18,7 @@ const categoriesRouter = require("./routes/api/categories");
 const transactionsRouter = require("./routes/api/transactions");
 
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
-
+//test
 //app.use(express.static(AVATAR_OF_USERS));
 app.use(helmet());
 app.use(logger(formatsLogger));
