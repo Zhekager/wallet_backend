@@ -72,7 +72,7 @@ const googleRedirect = async (req, res, next) => {
 
     const token = jwt.sign({ _id: existingUser.id }, SECRET_KEY);
     await Users.updateToken(existingUser.id, token);
-    return res.redirect(`${FRONTEND_URL}`); ///auth/google-user
+    return res.redirect(`${FRONTEND_URL}/dashboard`); ///auth/google-user
   } catch (error) {
     next(error);
   }
