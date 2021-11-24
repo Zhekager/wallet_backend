@@ -207,7 +207,10 @@ const findUserByEmail = async (req, res, next) => {
 const currentUser = async (req, res, next) => {
   try {
     const id = req.user._id;
-    const { name, email, avatar, token, balance } = req.user;
+    const { name, email, avatar, token, balance, _d } = req.user;
+    const transactions = await Transaction.find({
+      owner: _id,
+    }).populate({ path: "category", select: "name" });
     return res.status(HttpCode.OK).json({
       status: "success",
       code: HttpCode.OK,
@@ -218,6 +221,7 @@ const currentUser = async (req, res, next) => {
         avatar,
         token,
         balance,
+        transactions: transactions,
       },
     });
   } catch (error) {
