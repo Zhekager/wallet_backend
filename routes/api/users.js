@@ -10,12 +10,15 @@ const {
   uploadAvatar,
   //verifyUser,
   //repeatEmailForVerifyUser,
+  googleAuth,
+  googleRedirect,
+  findGoogleUser,
 } = require("../../controllers/users");
 
 const {
   validateCreateUser,
   validateLogin,
-  validateResendingEmail,
+  // validateResendingEmail,
 } = require("../../services/usersValidation");
 
 const guard = require("../../helpers/guard");
@@ -35,4 +38,15 @@ router.patch("/avatars", guard, upload.single("avatar"), uploadAvatar);
 
 router.put("/update", guard, updateUserInfo);
 
+router.get("/google", googleAuth);
+router.get("/google-redirect", googleRedirect);
+router.get("/google-user", findGoogleUser);
+
 module.exports = router;
+
+
+
+
+
+
+

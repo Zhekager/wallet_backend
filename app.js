@@ -13,7 +13,6 @@ const swaggerDocument = require("./swagger.json");
 const { HttpCode } = require("./helpers/constants");
 
 const usersRouter = require("./routes/api/users");
-const authRouter = require("./routes/api/auth");
 
 const categoriesRouter = require("./routes/api/categories");
 const transactionsRouter = require("./routes/api/transactions");
@@ -35,7 +34,6 @@ app.use((req, _res, next) => {
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use("/api/users", usersRouter);
-app.use("/auth", authRouter);
 
 app.use("/link", (_req, res) => {
   res.sendFile(path.join(__dirname, "./public/link.html"));
