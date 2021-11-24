@@ -12,6 +12,9 @@ if (process.env.NODE_ENV === "test") {
 const db = mongoose.connect(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+  useCreateIndex: true,
+  useFindAndModify: false,
+  poolSize: 5,
 });
 
 if (process.env.NODE_ENV === "test") {
