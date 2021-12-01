@@ -3,44 +3,52 @@ const User = require("../repository/users");
 const { HttpCode } = require("../helpers/constants");
 
 
-const addTransactions = async ({ body, user: { id, balance } }, res) => {
-  if (body.type === '+') {
-    const updatedBalance = (balance += body.money);
-    await User.updateUserBalance(id, { balance: updatedBalance });
-  }
-  if (body.type === '-') {
-    const updatedBalance = (balance -= body.money);
-    await User.updateUserBalance(id, { balance: updatedBalance });
-  }
+const addTransactions = async ({ body, user: { id, balance } }, res, next) => {
+  try {
+    if (body.type === '+') {
+      const updatedBalance = (balance += body.money);
+      await User.updateUserBalance(id, { balance: updatedBalance });
+    }
+    if (body.type === '-') {
+      const updatedBalance = (balance -= body.money);
+      await User.updateUserBalance(id, { balance: updatedBalance });
+    }
 
-  const result = await Transactions.addTransactions(id, body, balance);
+    const result = await Transactions.addTransactions(id, body, balance);
 
-  return res.status(HttpCode.CREATED).json({
-    status: "Success",
-    code: HttpCode.CREATED,
-    data: { result },
-  });
+    return res.status(HttpCode.CREATED).json({
+      status: "Success",
+      code: HttpCode.CREATED,
+      data: { result },
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
 
-const getTransactions = async ({ user: { id } }, res) => {
-  const result = await Transactions.getTransactions(id);
-
-  return res.json({
-    status: 'Success',
-    code: 200,
-    data: {
-      total: result.length,
-      result,
-    },
-  });
+const getTransactions = async (req, res, next) => {
+  try {
+    const userId = req.user._id;
+    const result = await Transactions.getTransactions(userId);
+    return res.json({
+      status: 'Success',
+      code: HttpCode.CREATED,
+      data: {
+        total: result.length,
+        result,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
 const getStatistics = async ({ user: { id }, query }, res) => {
   const amountMoney = array => array.reduce((acc, { money }) => acc + money, 0);
   const amountCategories = array =>
     array.reduce((acc, value) => {
-      const category = value.category.name;
+      const category = value.category;
       const { money } = value;
 
       acc[category]
