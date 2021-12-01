@@ -29,6 +29,24 @@ const Transformation = {
   HEIGHT: 250,
 };
 
+const Category = {
+  spend: [
+    'Main costs',
+    'Products',
+    'Car',
+    'Taking Care of Yourself',
+    'Taking care of children',
+    'Home Goods',
+    'Education',
+    'Leisure',
+    'Other expenses',
+  ],
+  income: [
+    'Regular income',
+    'Irregular income'
+  ]
+}
+
 module.exports = {
   HttpCode,
   LimiterParameters,
@@ -36,4 +54,5 @@ module.exports = {
   AvatarSize,
   LimitFieldSize,
   Transformation,
+  Category,
 };

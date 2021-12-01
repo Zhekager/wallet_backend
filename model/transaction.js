@@ -1,5 +1,6 @@
 const { Schema, SchemaTypes, model } = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate-v2');
+const { Category } = require('../helpers/constants');
 
 const transactionSchema = new Schema(
   {
@@ -13,8 +14,8 @@ const transactionSchema = new Schema(
       default: '+',
     },
     category: {
-      type: SchemaTypes.ObjectId,
-      ref: 'category',
+      type: SchemaTypes.String,
+      enum: [...Category.spend, ...Category.income],
       required: true,
     },
     money: {
@@ -27,7 +28,7 @@ const transactionSchema = new Schema(
     },
     month: {
       type: String,
-      default: new Date().toLocaleDateString().slice(0),
+      default: new Date().toLocaleDateString().slice(3,5),
     },
     year: {
       type: String,
