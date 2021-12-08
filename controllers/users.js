@@ -95,87 +95,87 @@ const login = async (req, res, next) => {
   });
 };
 
-// const googleAuth = async (req, res, next) => {
-//   try {
-//     const stringifiedParams = queryString.stringify({
-//       client_id: GOOGLE_CLIENT_ID,
-//       redirect_uri: `${BASE_URL}/api/users/google-redirect`,
-//       scope: [
-//         "https://www.googleapis.com/auth/userinfo.email",
-//         "https://www.googleapis.com/auth/userinfo.profile",
-//       ].join(" "),
-//       response_type: "code",
-//       access_type: "offline",
-//       prompt: "consent",
-//     });
-//     return res.redirect(
-//       `https://accounts.google.com/o/oauth2/v2/auth?${stringifiedParams}`
-//     );
-//   } catch (error) {
-//     next(error);
-//   }
-// };
+const googleAuth = async (req, res, next) => {
+  try {
+    const stringifiedParams = queryString.stringify({
+      client_id: GOOGLE_CLIENT_ID,
+      redirect_uri: `${BASE_URL}/api/users/google-redirect`,
+      scope: [
+        "https://www.googleapis.com/auth/userinfo.email",
+        "https://www.googleapis.com/auth/userinfo.profile",
+      ].join(" "),
+      response_type: "code",
+      access_type: "offline",
+      prompt: "consent",
+    });
+    return res.redirect(
+      `https://accounts.google.com/o/oauth2/v2/auth?${stringifiedParams}`
+    );
+  } catch (error) {
+    next(error);
+  }
+};
 
-// let existingUser = "";
+let existingUser = "";
 
-// const googleRedirect = async (req, res, next) => {
-//   try {
-//     const fullUrl = `${req.protocol}://${req.get("host")}${req.originalUrl}`;
-//     const urlObj = new URL(fullUrl);
-//     const urlParams = queryString.parse(urlObj.search);
+const googleRedirect = async (req, res, next) => {
+  try {
+    const fullUrl = `${req.protocol}://${req.get("host")}${req.originalUrl}`;
+    const urlObj = new URL(fullUrl);
+    const urlParams = queryString.parse(urlObj.search);
 
-//     const code = urlParams.code;
-//     const tokenData = await axios({
-//       url: `https://oauth2.googleapis.com/token`,
-//       method: "post",
-//       data: {
-//         client_id: GOOGLE_CLIENT_ID,
-//         client_secret: GOOGLE_CLIENT_SECRET,
-//         redirect_uri: `${BASE_URL}/api/users/google-redirect`,
-//         grant_type: "authorization_code",
-//         code: code,
-//       },
-//     });
+    const code = urlParams.code;
+    const tokenData = await axios({
+      url: `https://oauth2.googleapis.com/token`,
+      method: "post",
+      data: {
+        client_id: GOOGLE_CLIENT_ID,
+        client_secret: GOOGLE_CLIENT_SECRET,
+        redirect_uri: `${BASE_URL}/api/users/google-redirect`,
+        grant_type: "authorization_code",
+        code: code,
+      },
+    });
 
-//     const userData = await axios({
-//       url: "https://www.googleapis.com/oauth2/v2/userinfo",
-//       method: "get",
-//       headers: {
-//         Authorization: `Bearer ${tokenData.data.access_token}`,
-//       },
-//     });
+    const userData = await axios({
+      url: "https://www.googleapis.com/oauth2/v2/userinfo",
+      method: "get",
+      headers: {
+        Authorization: `Bearer ${tokenData.data.access_token}`,
+      },
+    });
 
-//     const userEmail = userData.data.email;
-//     console.log(userEmail);
-//     existingUser = await Users.findByEmail(userEmail);
-//     if (!existingUser) {
-//       existingUser = await Users.create({ email: userEmail });
-//     }
+    const userEmail = userData.data.email;
+    console.log(userEmail);
+    existingUser = await Users.findByEmail(userEmail);
+    if (!existingUser) {
+      existingUser = await Users.create({ email: userEmail });
+    }
 
-//     const token = jwt.sign({ _id: existingUser.id }, SECRET_KEY);
-//     await Users.updateToken(existingUser.id, token);
-//     return res.redirect(`${FRONTEND_URL}/google-user`);
-//   } catch (error) {
-//     next(error);
-//   }
-// };
+    const token = jwt.sign({ _id: existingUser.id }, SECRET_KEY);
+    await Users.updateToken(existingUser.id, token);
+    return res.redirect(`${FRONTEND_URL}/google-user`);
+  } catch (error) {
+    next(error);
+  }
+};
 
-// const findGoogleUser = async (_req, res, _next) => {
-//   const user = await Users.findByEmail(existingUser.email);
+const findGoogleUser = async (_req, res, _next) => {
+  const user = await Users.findByEmail(existingUser.email);
 
-//   const { _id: id, email, token } = user;
-//   res.status(HttpCode.OK).json({
-//     status: "success",
-//     code: HttpCode.OK,
-//     data: {
-//       token,
-//       user: {
-//         id,
-//         email,
-//       },
-//     },
-//   });
-// };
+  const { _id: id, email, token } = user;
+  res.status(HttpCode.OK).json({
+    status: "success",
+    code: HttpCode.OK,
+    data: {
+      token,
+      user: {
+        id,
+        email,
+      },
+    },
+  });
+};
 
 const findUserByEmail = async (req, res, next) => {
   try {
@@ -339,8 +339,8 @@ module.exports = {
   uploadAvatar,
   //verifyUser,
   //repeatEmailForVerifyUser,
-  //googleAuth,
-  //googleRedirect,
+  googleAuth,
+  googleRedirect,
   findUserByEmail,
-  //findGoogleUser,
+  findGoogleUser,
 };

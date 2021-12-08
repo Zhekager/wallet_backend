@@ -38,15 +38,8 @@ router.patch("/avatars", guard, upload.single("avatar"), uploadAvatar);
 
 router.put("/update", guard, updateUserInfo);
 
-// router.get("/google", googleAuth);
-// router.get("/google-redirect", googleRedirect);
-// router.get("/google-user", findGoogleUser);
+router.get("/google", googleAuth);
+router.get("/google-redirect", googleRedirect);
+router.get("/google-user", findGoogleUser);
 
 module.exports = router;
-
-
-
-
-
-
-

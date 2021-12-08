@@ -1,4 +1,4 @@
-const path = require("path");
+// const path = require("path");
 
 const express = require("express");
 const logger = require("morgan");
@@ -35,9 +35,9 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use("/api/users", usersRouter);
 
-app.use("/link", (_req, res) => {
-  res.sendFile(path.join(__dirname, "./public/link.html"));
-});
+// app.use("/link", (_req, res) => {
+//   res.sendFile(path.join(__dirname, "./public/link.html"));
+// });
 
 app.use("/api/transactions", transactionsRouter);
 app.use("/api/categories", categoriesRouter);
