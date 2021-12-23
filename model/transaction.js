@@ -6,7 +6,8 @@ const transactionSchema = new Schema(
   {
     date: {
       type: String,
-      default: new Date().toLocaleDateString(),
+      required: true,
+      //default: new Date().toLocaleDateString(),
     },
     type: {
       type: String,
