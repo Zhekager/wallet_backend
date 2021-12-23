@@ -44,6 +44,57 @@ const getTransactions = async (req, res, next) => {
   }
 };
 
+const removeTransaction = async (req, res, next) => {
+  try {
+    const userId = req.user.id
+    const result = await Transactions.removeTransaction(
+      userId,
+      req.params.transactionId
+    )
+
+    if (result) {
+      return res.json({
+        status: 'success',
+        code: HttpCode.OK,
+        message: 'Transaction deleted',
+        data: { result },
+      })
+    }
+    return res.json({
+      status: 'error',
+      code: HttpCode.NOT_FOUND,
+      message: 'Not found',
+    })
+  } catch (e) {
+    next(e)
+  }
+};
+
+const updateTransaction = async (req, res, next) => {
+  try {
+    const userId = req.user.id
+    const result = await Transactions.updateTransaction(
+      userId,
+      req.params.transactionId,
+      req.body
+    )
+    if (result) {
+      return res.json({
+        status: 'success',
+        code: HttpCode.OK,
+        data: { result },
+      })
+    }
+    return res.json({
+      status: 'error',
+      code: HttpCode.NOT_FOUND,
+      message: 'Not found',
+    })
+  } catch (e) {
+    next(e)
+  }
+};
+
 const getStatistics = async ({ user: { id }, query }, res) => {
   const amountMoney = array => array.reduce((acc, { money }) => acc + money, 0);
   const amountCategories = array =>
@@ -114,5 +165,7 @@ const getStatistics = async ({ user: { id }, query }, res) => {
 module.exports = {
   addTransactions,
   getTransactions,
+  removeTransaction,
+  updateTransaction,
   getStatistics,
 };
